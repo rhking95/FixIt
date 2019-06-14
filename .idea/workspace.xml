@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e49ded57-4423-4068-b327-bb9782d94909" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/FixIt.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-    </list>
+    <list default="true" id="e49ded57-4423-4068-b327-bb9782d94909" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,9 +71,9 @@
     </include_path>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
-    <option name="width" value="1383" />
+    <option name="x" value="-10" />
+    <option name="y" value="-10" />
+    <option name="width" value="1384" />
     <option name="height" value="745" />
   </component>
   <component name="ProjectView">
@@ -93,11 +87,6 @@
             <path>
               <item name="FixIt" type="b2602c69:ProjectViewProjectNode" />
               <item name="FixIt" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FixIt" type="b2602c69:ProjectViewProjectNode" />
-              <item name="FixIt" type="462c0819:PsiDirectoryNode" />
-              <item name="web" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -137,12 +126,12 @@
       <option name="presentableId" value="Default" />
       <updated>1547293476365</updated>
       <workItem from="1547293478237" duration="370000" />
-      <workItem from="1560536735587" duration="80000" />
+      <workItem from="1560536735587" duration="374000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="568000" />
+    <option name="totallyTimeSpent" value="862000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
