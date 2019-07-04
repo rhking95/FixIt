@@ -1,3 +1,7 @@
 demande_homepage:
     path:     /
     defaults: { _controller: DemandeBundle:Default:index }
+
+demande:
+    path:     /dem
+    defaults: { _controller: DemandeBundle:Default:demande }

@@ -1,0 +1,62 @@
+<head>
+    <link href="{{ asset('template/css/bootstrap.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template/css/datepicker3.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template/css/styles.css') }}" rel="stylesheet"/>
+</head>
+<body>
+{{ form_start(form)}}
+
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">Ajouter votre demande</div>
+        <div class="panel-body">
+            <div class="form-group">
+
+            <table border="1">
+                <tr>
+                    <td height="30px"><label>Categorie</label></td>
+                    <td></td>
+                    <td height="30px"><label>Adresse</label></td>
+                </tr>
+                <tr>
+                    <td height="50px">{{ form_widget(form.cat,{ 'attr': {'class': 'form-control'} } ) }}</td>
+                    <td>{{ form_errors(form.cat) }}</td>
+                    <td height="50px">{{ form_widget(form.address,{ 'attr': {'class': 'form-control','placeholder':'Address'} } ) }}</td>
+
+                </tr>
+                <tr>
+                    <td height="50px"><label>Disctiption</label></td>
+                    <td></td>
+                    <td height="50px"><label>Contact</label></td>
+                </tr>
+                <tr>
+                    <td height="50px">{{ form_widget(form.dis,{ 'attr': {'class': 'form-control'} })}}</td>
+                    <td>{{ form_errors(form.dis) }}</td>
+                    <td height="50px">{{ form_widget(form.contact,{ 'attr': {'class': 'form-control','placeholder':'Contact'} })}}</td>
+                </tr>
+                <tr>
+                    <td height="50px"><label>Photo</label></td>
+                </tr>
+                <tr>
+                    <td height="30px">{{ form_widget(form.photo,{ 'attr': {'class': 'form-control','placeholder':'Photo'} })}}</td>
+                    <td>{{ form_errors(form.photo) }}</td>
+                </tr>
+                <tr>
+                    <td height="50px"><label>Prix</label></td>
+                </tr>
+                <tr>
+                    <td height="30px">{{ form_widget(form.prix,{ 'attr': {'class': 'form-control','placeholder':'Prix'} })}}</td>
+                    <td>{{ form_errors(form.prix) }}</td>
+                </tr>
+                <tr>
+                    <td height="50px">{{ form_widget(form.Demander,{ 'attr': {'class': 'btn btn-primary','value':'Valider'} })}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    </div>
+</div>
+</body>
+
+{{ form_end(form)}}
+</body>
