@@ -48,10 +48,10 @@ class __TwigTemplate_04083b851d93c014d4eeca3bd6f6bd70167e08a84c219ded4f9502f4d20
         <div class=\"panel-body\">
             <div class=\"form-group\">
 
-            <table border=\"1\">
+            <table border=\"0\">
                 <tr>
                     <td height=\"30px\"><label>Categorie</label></td>
-                    <td></td>
+                    <td width=\"250px\"></td>
                     <td height=\"30px\"><label>Adresse</label></td>
                 </tr>
                 <tr>
@@ -179,10 +179,10 @@ class __TwigTemplate_04083b851d93c014d4eeca3bd6f6bd70167e08a84c219ded4f9502f4d20
         <div class=\"panel-body\">
             <div class=\"form-group\">
 
-            <table border=\"1\">
+            <table border=\"0\">
                 <tr>
                     <td height=\"30px\"><label>Categorie</label></td>
-                    <td></td>
+                    <td width=\"250px\"></td>
                     <td height=\"30px\"><label>Adresse</label></td>
                 </tr>
                 <tr>
