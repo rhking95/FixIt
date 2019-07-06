@@ -5,3 +5,7 @@ demande_homepage:
 demande:
     path:     /dem
     defaults: { _controller: DemandeBundle:Default:demande }
+
+demande:
+    path:     /lstdem
+    defaults: { _controller: DemandeBundle:Default:lstdemande }
