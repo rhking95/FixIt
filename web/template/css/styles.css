@@ -344,7 +344,7 @@ a.bg-danger:hover {
 .panel-blue { background: #30a5ff; color: #fff; }
 .panel-teal { background: #1ebfae; color: #fff; }
 .panel-orange { background: #ffb53e; color: #fff; }
-.panel-red { background: #f9243f; color: #fff; }
+.panel-red { background: #a60d18; color: #fff; }
 
 .panel-blue .panel-body p,
 .panel-teal .panel-body p,
@@ -570,7 +570,7 @@ a.bg-danger:hover {
 .sidebar ul.nav .active > a:focus, .sidebar ul.nav li.parent a.active:focus {
 	color: #fff;
 	background-color: #30a5ff;
-}*/
+}
 
 .sidebar ul.nav ul,
 .sidebar ul.nav ul li {
@@ -811,7 +811,6 @@ h1.page-header {
 
 .chat .panel-body {
 	overflow-y: scroll;
-	height: 300px;
 }
 
 .chat-body small {
