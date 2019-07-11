@@ -1,30 +1,97 @@
-<head>
-    <link href="{{ asset('template/css/bootstrap.min.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('template/css/datepicker3.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('template/css/styles.css') }}" rel="stylesheet"/>
-</head>
+{% extends 'base.html.twig' %}
+{% block content %}
 <body>
-{% for i in demandes %}
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
     <div class="panel panel-default chat">
-        <div class="panel-heading" id="accordion"><svg class="glyph stroked two-messages"><use xlink:href="#stroked-two-messages"></use></svg> Chat</div>
-
-        <div class="panel-body">
+    <div class="panel-heading" id="accordion">
+        <svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg>Demandes
+    </div>
+    <div class="panel-body">
+        {% for i in demandes %}
             <ul>
                 <li class="left clearfix">
 								<span class="chat-img pull-left">
-									<img src="http://placehold.it/80/30a5ff/fff" alt="User Avatar" class="img-circle">
-								</span>
+									<a href="{{ asset('./img/' ~ i.photo )}}">
+                                        <img src="{{ asset('./img/' ~ i.photo )}}" class="img-circle"  height="80" width="80">
+								    </a>
+                                </span>
+
                     <div class="chat-body clearfix">
-                        <div class="header">
-                            <strong class="primary-font">John Doe</strong> <small class="text-muted">32 mins ago</small>
-                        </div>
+
+                            <div class="header">
+                                <strong class="primary-font">{{ i.iduser.username }}</strong> <small class="text-muted">{{ i.date|date("Y-m-d H:i:s") }}</small>
+                            </div>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ante turpis, rutrum ut ullamcorper sed, dapibus ac nunc. Vivamus luctus convallis mauris, eu gravida tortor aliquam ultricies.
+                            {{ i.dis }}<br>
+                            prix : {{ i.prix }}<br>
+                            adresse : {{ i.address }}
                         </p>
                     </div>
                 </li>
             </ul>
-        </div>
+    <!-- lst commentaire par demande -->
+    <button id="{{ i.id ~ '0' }}" class="btn btn-primary">Afficher les commentaires</button>
+    <button id="{{ i.id ~ '1' }}"  class="btn btn-default" hidden >Masquer les commentaires</button>
+    <a href="{{ path('traitement_demande',{'id':i.id}) }}"> <button  class="btn btn-danger">Demande de traitement</button></a>
+    <div id="{{ i.id ~ '2' }}" hidden>
+        <form action="{{ path('add_com') }}">
+            <br>
+            {% for k in coms %}
+                {% if k.iddem == i.id %}
+                    {% for j in users %}
+                         {% if k.iduser == j.id %}
+
+                    <div class="alert bg-primary" role="alert">
+                        <svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg><label>{{ j.username ~' : ' }}</label>
+                        {{k.valure }} </span></a>
+                        {% if k.iduser == app.user.id %}
+                            <a href="{{ path('supprimer_com',{'idcom':k.id}) }}" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+
+                         {% endif %}
+                    </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+            <table>
+                <tr>
+                    <td width="1200px">
+                        <textarea class="form-control" name="value" required autofocus></textarea>
+                    </td>
+                    <td width="20px"></td>
+                    <td>
+                        <input type="submit" value="Envoyer" class="btn btn-primary">
+                    </td>
+                </tr>
+            </table>
+            <input type="text" name="iddem" hidden value="{{ i.id }}">
+            <input type="text" name="iduser" hidden value="{{ app.user.id }}">
+            <br>
+        </form>
     </div>
-{% endfor %}
+                <script>
+                    $('#{{ i.id ~ '0' }}').click(
+                        function () {
+                            $('#{{ i.id ~ '2' }}').show();
+                            $('#{{ i.id ~ '0' }}').hide();
+                            $('#{{ i.id ~ '1' }}').show();
+                        }
+                    );
+
+                    $('#{{ i.id ~ '1' }}').click(
+                        function () {
+                            $('#{{ i.id ~ '2' }}').hide();
+                            $('#{{ i.id ~ '0' }}').show();
+                            $('#{{ i.id ~ '1' }}').hide();
+                        }
+                    );
+
+                </script>
+
+        {% endfor %}
+        </div>
+
+</div>
+</div>
 </body>
+{% endblock %}

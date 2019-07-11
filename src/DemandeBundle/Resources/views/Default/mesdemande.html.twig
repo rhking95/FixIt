@@ -1,0 +1,269 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <svg class="glyph stroked male-user">
+                    <use xlink:href="#stroked-male-user"></use>
+                </svg>
+            </a>
+        </li>
+        <li class="active">Liste des repenses sur les demandes</li>
+    </ol>
+    {% for i in demandes1 %}
+<br>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+           <table border="0">
+           <tr>
+               <td width="150px">
+                   <a href="{{ path("modifier_dem",{'iddem':i.id}) }}">
+                       <svg class="glyph stroked pencil">
+                           <use xlink:href="#stroked-pencil"/>
+                       </svg>
+                       Modifier
+                   </a>
+               </td>
+               <td width="1000px">
+                   : {{ i.cat.nom}} | Demande #{{ i.id }}
+               </td>
+               <td>
+                   <a href="{{ path("modifier_dem",{'iddem':i.id}) }}">
+                       <svg class="glyph stroked cancel">
+                           <use xlink:href="#stroked-cancel"/>
+                       </svg>
+
+                   </a>
+               </td>
+           </tr>
+           </table>
+        </div>
+        <div class="panel-body">
+            <table border="0">
+                <tr>
+                    <td width="400px" rowspan="4">
+                  <span class="chat-img pull-left">
+                  <a href="{{ asset('./img/' ~ i.photo )}}">
+                  <img src="{{ asset('./img/' ~ i.photo )}}" class="img-circle"  height="200" width="200">
+                  </a>
+                  </span>
+                    </td>
+                    <td width="550px" colspan="2">
+                        <textarea class="form-control" disabled>{{ i.dis }}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="10px">
+                        <br>
+                        <p>Prix : </p>
+                    </td>
+                    <td>
+                        <input type="text" value="{{ i.prix }}" disabled class="form-control">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <br>
+                        <p> Adresse : </p>
+                    </td>
+                    <td>
+                        <input type="text" value="{{ i.address }}" disabled class="form-control">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <br>
+                        <p> Contact :  </p>
+                    </td>
+                    <td>
+                        <input type="text" value="{{ i.contact }}" disabled class="form-control">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <br>
+                        <br>
+                        <input type="button" id="{{ i.id ~ 0 }}" value="Afficher le repenses " class="btn btn-primary">
+                        <input type="button" id="{{ i.id ~ 1 }}" value="Masquer le repenses " class="btn btn-default" hidden>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <div id="{{ i.id ~ 2 }}" hidden>
+                <div class="bootstrap-table">
+                    <div class="fixed-table-container">
+                        <table data-toggle="table" data-url="tables/data1.json"
+                               data-show-refresh="true" data-show-toggle="true"
+                               data-show-columns="true" data-search="true"
+                               data-select-item-name="toolbar1" data-pagination="true"
+                               data-sort-name="name" data-sort-order="desc" class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th style="">
+                                    <div class="th-inner sortable">Repense</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                                <th style="">
+                                    <div class="th-inner sortable">Utilisateur</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                                <th style="">
+                                    <div class="th-inner sortable">Accepter</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                                <th style="">
+                                    <div class="th-inner sortable">Refuser</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for j in reps %}
+                            {% if i.id ==  j.iddem.id %}
+                            <tr class="no-records-found">
+                                <td>
+                                    <textarea disabled class="form-control">{{ j.rep}}</textarea>
+                                </td>
+                                <td>
+                                    <input value="{{ j.iduser.username }}" class="form-control" disabled>
+                                </td>
+                                <td>
+                                    <ol class="breadcrumb">
+                                        <li>
+                                            <a href="{{ path('Accepter_dem',{'idrep':j.id,'iddem':i.id,'iduser':app.user.id}) }}" style="color: green">
+                                                <svg class="glyph stroked cancel" style="color: green">
+                                                    <use xlink:href="#stroked-cancel"/>
+                                                </svg>
+                                                Accepter
+                                            </a>
+                                        </li>
+                                    </ol>
+                                </td>
+                                <td>
+                                    <ol class="breadcrumb">
+                                        <li>
+                                            <a href="{{ path('Refuser_dem',{'idrep':j.id,'iduser':app.user.id}) }}" style="color: red">
+                                                <svg class="glyph stroked cancel" style="color: red">
+                                                    <use xlink:href="#stroked-cancel"/>
+                                                </svg>
+                                                Refuser
+                                            </a>
+                                        </li>
+                                    </ol>
+                                </td>
+                            </tr>
+                            </tbody>
+                            {% endif %}
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+                <script>
+                    $('#{{ i.id ~ '0' }}').click(
+                        function () {
+                            $('#{{ i.id ~ '2' }}').show();
+                            $('#{{ i.id ~ '0' }}').hide();
+                            $('#{{ i.id ~ '1' }}').show();
+                        }
+                    );
+
+                    $('#{{ i.id ~ '1' }}').click(
+                        function () {
+                            $('#{{ i.id ~ '2' }}').hide();
+                            $('#{{ i.id ~ '0' }}').show();
+                            $('#{{ i.id ~ '1' }}').hide();
+                        }
+                    );
+
+                </script>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <svg class="glyph stroked male-user">
+                    <use xlink:href="#stroked-male-user"></use>
+                </svg>
+            </a>
+        </li>
+        <li class="active">Liste des demende en attente</li>
+    </ol>
+    {% for i in demandes0 %}
+        <br>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <table border="0">
+                    <tr>
+                        <td width="150px">
+                            <a href="{{ path("modifier_dem",{'iddem':i.id}) }}">
+                                <svg class="glyph stroked pencil">
+                                    <use xlink:href="#stroked-pencil"/>
+                                </svg>
+                                Modifier
+                            </a>
+                        </td>
+                        <td width="1000px">
+                            : {{ i.cat.nom}} | Demande #{{ i.id }}
+                        </td>
+                        <td>
+                            <a href="{{ path("supprimer_dem",{'iddem':i.id}) }}">
+                                <svg class="glyph stroked cancel">
+                                    <use xlink:href="#stroked-cancel"/>
+                                </svg>
+
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="panel-body">
+                <table border="0">
+                    <tr>
+                        <td width="400px" rowspan="4">
+                  <span class="chat-img pull-left">
+                  <a href="{{ asset('./img/' ~ i.photo )}}">
+                  <img src="{{ asset('./img/' ~ i.photo )}}" class="img-circle"  height="200" width="200">
+                  </a>
+                  </span>
+                        </td>
+                        <td width="550px" colspan="2">
+                            <textarea class="form-control" disabled>{{ i.dis }}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="10px">
+                            <br>
+                            <p>Prix : </p>
+                        </td>
+                        <td>
+                            <input type="text" value="{{ i.prix }}" disabled class="form-control">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br>
+                            <p> Adresse : </p>
+                        </td>
+                        <td>
+                            <input type="text" value="{{ i.address }}" disabled class="form-control">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br>
+                            <p> Contact :  </p>
+                        </td>
+                        <td>
+                            <input type="text" value="{{ i.contact }}" disabled class="form-control">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

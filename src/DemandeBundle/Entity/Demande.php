@@ -63,6 +63,27 @@ class Demande
     private $prix;
 
     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="iduser",referencedColumnName="id")
+     */
+    private $iduser;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="Date",type="datetime")
+     */
+    private $date;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="etat",type="integer")
+     */
+    private $etat;
+
+
+    /**
      * Get id
      *
      * @return int
@@ -167,6 +188,55 @@ class Demande
     {
         $this->contact = $contact;
     }
+
+    /**
+     * @return int
+     */
+    public function getIduser()
+    {
+        return $this->iduser;
+    }
+
+    /**
+     * @param int $iduser
+     */
+    public function setIduser($iduser)
+    {
+        $this->iduser = $iduser;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param int $date
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+    }
+
+    /**
+     * @return int
+     */
+    public function getEtat()
+    {
+        return $this->etat;
+    }
+
+    /**
+     * @param int $etat
+     */
+    public function setEtat($etat)
+    {
+        $this->etat = $etat;
+    }
+
 
 
 }

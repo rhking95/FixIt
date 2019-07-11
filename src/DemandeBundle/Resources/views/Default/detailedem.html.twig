@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <body>
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"/></svg>
+                {{ demande.cat.nom}} | Demande #{{ demande.id }}
+            </div>
+            <div class="panel-body">
+                <form action="{{ path('repense_demande',{'iddem':demande.id,'iduser':app.user.id})}}">
+                    <table border="0">
+                        <tr>
+
+                            <td width="400px" rowspan="4">
+                        <span class="chat-img pull-left">
+                            <a href="{{ asset('./img/' ~ demande.photo )}}">
+                                <img src="{{ asset('./img/' ~ demande.photo )}}" class="img-circle"  height="300" width="300">
+                            </a>
+                        </span>
+                            </td>
+                            <td width="550px" colspan="2">
+                                <textarea class="form-control" disabled>{{ demande.dis }}</textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="10px">
+                                <br>
+                                <p>Prix : </p>
+                            </td>
+                            <td>
+                                <input type="text" value="{{ demande.prix }}" disabled class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <br>
+                                <p> Adresse : </p>
+                            </td>
+                            <td>
+                                <input type="text" value="{{ demande.address }}" disabled class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <br>
+                                <p> Contact :  </p>
+                            </td>
+                            <td>
+                                <input type="text" value="{{ demande.contact }}" disabled class="form-control">
+                            </td>
+                        </tr>
+
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    </body>
+
+{% endblock %}

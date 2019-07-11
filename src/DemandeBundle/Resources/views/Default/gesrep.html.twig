@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+
+    <div class="panel panel-default">
+    <div class="panel-heading">
+        <svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"/></svg>
+        Mes repenses acceptées
+    </div>
+    <div class="panel-body">
+        <table>
+        {% for i in rep2 %}
+            <tr>
+                <td width="50px" height="50px">
+                    <svg class="glyph stroked checkmark"><use xlink:href="#stroked-checkmark" style="color: green"/></svg>
+                </td>
+                <td>
+              Votre repense  "{{ i.rep }}" est acceptée par "{{ i.iduser.username }}" pour la    <a href="{{ path('detailedem',{'iddem':i.iddem.id}) }}">  demande #{{ i.iddem.id }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+    </div>
+
+    <div class="panel panel-default">
+    <div class="panel-heading">
+        <svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"/></svg>
+        Mes repenses refusées
+    </div>
+    <div class="panel-body">
+        <table>
+            {% for i in rep1 %}
+                <tr>
+                    <td width="50px" height="50px">
+                        <svg class="glyph stroked checkmark"><use xlink:href="#stroked-cancel" style="color: red"/></svg>
+                    </td>
+                    <td>
+                        Votre repense  "{{ i.rep }}" est refuser par "{{ i.iduser.username }}" pour la   <a href="{{ path('detailedem',{'iddem':i.iddem.id}) }}">    demande #{{ i.iddem.id }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"/></svg>
+            Mes repenses en attente de validation
+        </div>
+        <div class="panel-body">
+            <table>
+                {% for i in rep0 %}
+                    <tr>
+                        <td width="50px" height="50px">
+                            <svg class="glyph stroked checkmark"><use xlink:href="#stroked-clock" /></svg>
+                        </td>
+                        <td>
+                            Votre repense  "{{ i.rep }}" est en attente pour la    <a href="{{ path('detailedem',{'iddem':i.iddem.id}) }}">   demande #{{ i.iddem.id }} </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

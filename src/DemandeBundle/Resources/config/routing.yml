@@ -6,6 +6,50 @@ demande:
     path:     /dem
     defaults: { _controller: DemandeBundle:Default:demande }
 
-demande:
+lst_demande:
     path:     /lstdem
     defaults: { _controller: DemandeBundle:Default:lstdemande }
+
+add_com:
+    path:     /addcom
+    defaults: { _controller: DemandeBundle:Default:addcom }
+
+traitement_demande:
+    path:     /trait/{id}
+    defaults: { _controller: DemandeBundle:Default:traitementdemande }
+
+repense_demande:
+    path:     /rep/{iddem}/{iduser}
+    defaults: { _controller: DemandeBundle:Default:repensedemande }
+
+mes_demande:
+    path:     /mesdemande/{iduser}
+    defaults: { _controller: DemandeBundle:Default:mesdemande }
+
+modifier_dem:
+    path:     /modifierdem/{iddem}
+    defaults: { _controller: DemandeBundle:Default:modifierdem }
+
+supprimer_dem:
+    path:     /supprimerdem/{iddem}
+    defaults: { _controller: DemandeBundle:Default:supprimerdem }
+
+Refuser_dem:
+    path:     /mesdemande/{idrep}/{iduser}
+    defaults: { _controller: DemandeBundle:Default:refuserdem }
+
+Accepter_dem:
+    path:     /mesdemande/{idrep}/{iddem}/{iduser}
+    defaults: { _controller: DemandeBundle:Default:accepterdem }
+
+Gestion_Rep:
+    path:     /gesrep/{iduser}
+    defaults: { _controller: DemandeBundle:Default:gesreps }
+
+supprimer_com:
+    path:     /supprimercom/{idcom}
+    defaults: { _controller: DemandeBundle:Default:supprimercom }
+
+detailedem:
+    path:     /detaildem/{iddem}
+    defaults: { _controller: DemandeBundle:Default:detaildem }
