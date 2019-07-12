@@ -56,11 +56,14 @@ class DefaultController extends Controller
                 }
 
                 $dem->setDate(new \DateTime('now'));
+                $users = $this->getDoctrine()->getRepository(User::class)->findBy(array('id'=>$req->get('iduser')));
+                $dem->setIduser($users[0]);
+
                 $dem->setEtat(0);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($dem);
                 $em->flush();
-                return $this->render('@Demande/Default/demande.html.twig', array('form' => $form,'title'=>$title,'btn'=>$btn));
+                return $this->mesdemandeAction($req->get('iduser'));
             }
         }
             $form = $form->createView();
@@ -122,6 +125,7 @@ class DefaultController extends Controller
         $repense = new Repense();
         $repense->setIddem($demande);
         $repense->setIduser($user);
+        $repense->setEtat(0);
         $repense->setRep($request->get('rep'));
 
         $demande->setEtat(1);

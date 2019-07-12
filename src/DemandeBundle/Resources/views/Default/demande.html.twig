@@ -53,7 +53,7 @@
     </div>
     </div>
 </div>
-{{ form_widget(form.iduser,{ 'attr': {'value': app.user.id } }) }}
+<input type="text" value="{{ app.user.id }}" name="iduser" hidden>
 {{ form_end(form)}}
 </body>
 

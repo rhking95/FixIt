@@ -34,7 +34,7 @@ class DemandeType extends AbstractType
                 ])
             ->add('address')
             ->add('contact')
-            ->add('iduser')
+            ->remove('iduser')
             ->add('Demander',SubmitType::class);
 
     }/**
