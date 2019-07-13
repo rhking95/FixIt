@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <body>
+    {{ form_start(form)}}
+
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <div class="panel panel-default">
+    <div class="panel-heading">Ajouter Produit</div>
+    <div class="panel-body">
+        <div class="form-group">
+
+            <table border="0">
+                <tr>
+                    <td width="200px"><label>Nom </label></td>
+                    <td>
+                        {{ form_widget(form.nom,{ 'attr': {'class': 'form-control','placeholder' : 'Nom'} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Catégorie </label></td>
+                    <td>
+            {{ form_widget(form.cat,{ 'attr': {'class': 'form-control','placeholder' : 'Catégorie'} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Description </label></td>
+                    <td>
+            {{ form_widget(form.disc,{ 'attr': {'class': 'form-control','placeholder' : 'Description'} } ) }}
+                </td>
+                </tr>
+                <tr>
+                    <td><label>Photo</label></td>
+                    <td>
+            {{ form_widget(form.photo,{ 'attr': {'class': 'form-control'} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Prix </label></td>
+                    <td>
+            {{ form_widget(form.prix,{ 'attr': {'class': 'form-control','placeholder' : 'Prix'} } ) }}
+                    </td>
+                    <td>{{ form_errors(form.prix) }}</td>
+                </tr>
+                <tr>
+                    <td><label>Quantité </label></td>
+                    <td>
+            {{ form_widget(form.quant,{ 'attr': {'class': 'form-control','placeholder' : 'Quantité','min':'1'} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+            {{ form_widget(form.AjouterProduit,{ 'attr': {'class': 'btn btn-primary'} } ) }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+<input type="text" name="iduser" value="{{ app.user.id }}" hidden>
+
+{{ form_end (form) }}
+    {% endblock %}

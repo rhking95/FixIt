@@ -85,6 +85,29 @@
                         Mes repenses
                     </a>
                 </li>
+                <li role="presentation" class="divider"></li>
+                <li><a href="{{ path('produit_ajout') }}">
+                        <svg class="glyph stroked pencil">
+                            <use xlink:href="#stroked-pencil"/>
+                        </svg>
+                        Ajout D'un Produit
+                    </a>
+                </li>
+                <li><a href="{{ path('produit_liste') }}">
+                        <svg class="glyph stroked notepad ">
+                            <use xlink:href="#stroked-notepad"/>
+                        </svg>
+                        Liste Produit
+                    </a>
+                </li>
+                <li><a href="{{ path('MesPrdouit',{'iduser':app.user.id}) }}">
+                        <svg class="glyph stroked notepad ">
+                            <use xlink:href="#stroked-notepad"/>
+                        </svg>
+                        Mes produits
+                    </a>
+                </li>
+
             </ul>
         </div>
     </div>

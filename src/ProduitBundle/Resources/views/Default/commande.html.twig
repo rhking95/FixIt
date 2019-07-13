@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+<body>
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"/></svg>
+            {{ prod.nom }} | {{ prod.cat.nom }}
+        </div>
+        <div class="panel-body">
+            <form action="{{ path('command_passer') }}">
+                <table border="0">
+                    <tr>
+
+                        <td width="400px" rowspan="4">
+                        <span class="chat-img pull-left">
+                            <a href="{{ asset('./img/' ~ prod.photo )}}">
+                                <img src="{{ asset('./img/' ~ prod.photo )}}" class="img-circle"  height="300" width="300">
+                            </a>
+                        </span>
+                        </td>
+                        <td width="550px" colspan="2">
+                            <textarea class="form-control" disabled>{{ prod.disc }}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="10px">
+                            <br>
+                            <p>Prix : </p>
+                        </td>
+                        <td>
+                            <input type="text" value="{{ prod.prix }}" disabled class="form-control">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br>
+                            <p> Quantité : </p>
+                        </td>
+                        <td>
+                            <input type="text" value="{{ prod.quant }}" disabled class="form-control">
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+                <table>
+                    <tr><td><label>Passer une commande</label></td></tr>
+                    <tr>
+                        <td> Qantité commandée</td>
+                        <td><input type="number" id='qte' name="qte" class="form-control" min="1" max="{{ prod.quant }}" placeholder="quantité"></td>
+                    </tr>
+                    <tr>
+                        <td>Prix Total :</td>
+                        <td><input type="text" id="prixc" name="prixc" class="form-control" placeholder="Prix Totale" disabled></td>
+                        <td width="50px"></td>
+                        <td>
+                            <input type="submit" class="btn btn-primary" value="Commander">
+                        </td>
+                    </tr>
+
+                </table>
+                <input type="text" name="iduser" value="{{ app.user.id }}" hidden>
+                <input type="text" name="idpro" value="{{ prod.id }}" hidden>
+                <input type="text" id="prixt" name="prixt" value="{{ prod.id }}" hidden>
+
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $("#qte").change(
+        function () {
+            $("#prixc").val($("#qte").val()*{{ prod.prix }});
+            $("#prixt").val($("#qte").val()*{{ prod.prix }});
+        }
+    )
+</script>
+</body>
+{% endblock %}

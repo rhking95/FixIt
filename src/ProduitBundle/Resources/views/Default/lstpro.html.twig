@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+<body>
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <div class="panel panel-default chat">
+        <div class="panel-heading" id="accordion">
+            <svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg>Produits
+        </div>
+        <div class="panel-body">
+        {% for i in prods %}<ul>
+            <li class="left clearfix">
+								<span class="chat-img pull-left">
+									<a href="{{ asset('./img/' ~ i.photo )}}">
+                                        <img src="{{ asset('./img/' ~ i.photo )}}" class="img-circle"  height="80" width="80">
+								    </a>
+                                </span>
+
+                <div class="chat-body clearfix">
+
+                    <div class="header">
+                        <strong class="primary-font">{{ i.iduser.username }}</strong> <small class="text-muted">time</small>
+                    </div>
+                    <p>
+                        {{ i.disc }}<br>
+                        prix : {{ i.prix }} Dt<br>
+                        Quantité : {{ i.quant }}
+                    </p>
+                </div>
+            </li>
+            </ul>
+            <a href="{{ path('commande',{'idpro':i.id}) }}">
+                <input type="button" value="Passer une commande" class="btn btn-danger">
+            </a>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+
+</body>
+{% endblock %}

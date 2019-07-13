@@ -1,0 +1,150 @@
+{% extends 'base.html.twig' %} {% block content %}
+
+    <body>
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">
+                    <svg class="glyph stroked male-user">
+                        <use xlink:href="#stroked-male-user"></use>
+                    </svg>
+                </a>
+            </li>
+            <li class="active">Liste mes produits</li>
+        </ol>
+            {% for i in prods %}
+            <div class="panel panel-default">
+            <div class="panel-heading">
+                     {{ i.cat.nom}} | Produit #{{ i.nom }}
+                </div>
+                <div class="panel-body">
+                    <table border="0">
+                        <tr>
+                            <td width="400px" rowspan="3">
+                                <span class="chat-img pull-left">
+                                    <a href="{{ asset('./img/' ~ i.photo )}}">
+                                        <img src="{{ asset('./img/' ~ i.photo )}}" class="img-circle"  height="200" width="200">
+                                    </a>
+                                </span>
+                            </td>
+                            <td width="550px" colspan="2">
+                                <textarea class="form-control" disabled>{{ i.disc }}</textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="10px">
+                                <br>
+                                <p>Prix : </p>
+                            </td>
+                            <td>
+                                <input type="text" value="{{ i.prix }}" disabled class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <br>
+                                <p> Quantité : </p>
+                            </td>
+                            <td>
+                                <input type="text" value="{{ i.quant }}" disabled class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <br>
+                                <br>
+                                <input type="button" id="{{ i.id ~ 0 }}" value="Afficher les commandes " class="btn btn-primary">
+                                <input type="button" id="{{ i.id ~ 1 }}" value="Masquer les commandes " class="btn btn-default" hidden>
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
+                    <div id="{{ i.id ~ 2 }}" hidden>
+                        <div class="bootstrap-table">
+                            <div class="fixed-table-container">
+                                <table data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th style="">
+                                            <div class="th-inner sortable">Quantité</div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                        <th style="">
+                                            <div class="th-inner sortable">Prix Commande</div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                        <th style="">
+                                            <div class="th-inner sortable">Utilisateur</div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                        <th style="">
+                                            <div class="th-inner sortable">Traitment</div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for j in coms %}
+                                        {% if i.id == j.idpro.id %}
+                                    <tr class="no-records-found">
+                                        <td>
+                                            <input disabled class="form-control" value="{{ j.quant }}">
+                                        </td>
+                                        <td>
+                                            <input disabled class="form-control" value="{{ j.prixc}}">
+                                        </td>
+                                        <td>
+                                            <input value="{{ j.iduser.username }}" class="form-control" disabled>
+                                        </td>
+                                        {% if j.etat == 0 %}
+                                        <td>
+                                            <ol class="breadcrumb">
+                                                <li>
+                                                    <a href="{{ path('traiter_com',{'id':j.id,'iduser':app.user.id}) }}">
+                                                    <svg class="glyph stroked cancel" style="color: green">
+                                                        <use xlink:href="#stroked-cancel" />
+                                                    </svg>
+                                                    traiter
+                                                    </a>
+                                                </li>
+                                            </ol>
+                                        </td>
+                                        {% else %}
+                                        <td>
+                                            <input value=" la commande est traitée" type="text" class="form-control" disabled>
+                                        </td>
+                                        {% endif %}
+                                    </tr>
+                                    </tbody>
+                                    {% endif %}
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                        <script>
+                            $('#{{ i.id ~ '0' }}').click(
+                                function () {
+                                    $('#{{ i.id ~ '2' }}').show();
+                                    $('#{{ i.id ~ '0' }}').hide();
+                                    $('#{{ i.id ~ '1' }}').show();
+                                }
+                            );
+
+                            $('#{{ i.id ~ '1' }}').click(
+                                function () {
+                                    $('#{{ i.id ~ '2' }}').hide();
+                                    $('#{{ i.id ~ '0' }}').show();
+                                    $('#{{ i.id ~ '1' }}').hide();
+                                }
+                            );
+
+                        </script>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+    </div>
+    </body>
+
+{% endblock %}

@@ -1,3 +1,29 @@
 produit_homepage:
     path:     /
     defaults: { _controller: ProduitBundle:Default:index }
+
+produit_ajout:
+    path:     /ajouterpro
+    defaults: { _controller: ProduitBundle:Default:ajout }
+
+produit_liste:
+    path:     /listepro
+    defaults: { _controller: ProduitBundle:Default:listepro }
+
+commande:
+    path:     /commande/{idpro}
+    defaults: { _controller: ProduitBundle:Default:commande }
+
+command_passer:
+    path:     /commandpasser
+    defaults: { _controller: ProduitBundle:Default:commandpasser }
+
+MesPrdouit:
+    path:     /mesproduit/{iduser}
+    defaults: { _controller: ProduitBundle:Default:mesproduit }
+
+traiter_com:
+    path:     /traitercom/{id}/{iduser}
+    defaults: { _controller: ProduitBundle:Default:traitercom }
+
+
