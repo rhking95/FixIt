@@ -26,4 +26,11 @@ traiter_com:
     path:     /traitercom/{id}/{iduser}
     defaults: { _controller: ProduitBundle:Default:traitercom }
 
+liste_prod:
+    path:     /listeprod
+    defaults: { _controller: ProduitBundle:MobileProd:listeprodmobile}
+
+commande_mobile:
+    path:     /commande/{qte}/{prixc}/{iduser}/{idpro}
+    defaults: { _controller: ProduitBundle:MobileProd:CommandeMobile}
 

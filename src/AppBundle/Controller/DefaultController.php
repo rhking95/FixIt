@@ -4,9 +4,12 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class DefaultController extends Controller
 {
@@ -29,11 +32,18 @@ class DefaultController extends Controller
     {
         $users = $this->getDoctrine()->getRepository
         (User::class)->findBy(array('username'=>$login));
+        $serializer=new Serializer([new ObjectNormalizer()]);
         if ($users == null){
-            return new Response("User invalide");
+            return new Response("0");
         }else{
             $user = $users[0];
-            return new Response("User valide");
+                if (password_verify($pass, $user->getPassword())){
+                    $formatted=$serializer->normalize($user);
+                    return new JsonResponse($formatted);
+                }else{
+                    return new Response("1");
+                }
+
         }
 
     }
