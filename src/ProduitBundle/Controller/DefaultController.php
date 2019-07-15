@@ -80,9 +80,10 @@ class DefaultController extends Controller
 
         $prods = $this->getDoctrine()->getRepository(produit::class)->findby(array('id'=>$idpro));
         $users = $this->getDoctrine()->getRepository(User::class)->findBy(array('id'=>$iduser));
-
+        $prod = $prods[0];
+        $prod->setquant($prod->getquant()-$qte);
         $com = new commande();
-        $com->setIdpro($prods[0]);
+        $com->setIdpro($prod);
         $com->setIduser($users[0]);
         $com->setQuant($qte);
         $com->setPrixc($prixc);
