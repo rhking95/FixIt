@@ -25,7 +25,7 @@ class DemandeType extends AbstractType
             ->add('photo',FileType::class)
             ->add('cat',EntityType::class,
                 array(
-                    'class' => 'DemandeBundle\Entity\CategorieDem',
+                    'class' => 'AppBundle\Entity\Categorie',
                     'choice_label' => 'nom',
                     'multiple' => false))
 

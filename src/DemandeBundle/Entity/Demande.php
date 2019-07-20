@@ -50,7 +50,7 @@ class Demande
     private $contact;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CategorieDem")
+     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Categorie")
      * @ORM\JoinColumn(name="cat",referencedColumnName="id")
      */
     private $cat;

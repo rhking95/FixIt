@@ -107,7 +107,21 @@
                         Mes produits
                     </a>
                 </li>
-
+                <li role="presentation" class="divider"></li>
+                <li><a href="{{ path('service_ajoutpage',{'iduser':app.user.id}) }}">
+                        <svg class="glyph stroked notepad ">
+                            <use xlink:href="#stroked-pencil"/>
+                        </svg>
+                        Ajouter Service
+                    </a>
+                </li>
+                <li><a href="{{ path('service_listservicepage',{'iduser':app.user.id}) }}">
+                        <svg class="glyph stroked notepad ">
+                            <use xlink:href="#stroked-notepad"/>
+                        </svg>
+                        Mes Services
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

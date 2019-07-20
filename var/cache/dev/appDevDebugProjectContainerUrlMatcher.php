@@ -133,9 +133,17 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 return $this->mergeDefaults(array_replace($matches, array('_route' => 'detailedem')), array (  '_controller' => 'DemandeBundle\\Controller\\DefaultController::detaildemAction',));
             }
 
-            // lst_demande
-            if ('/demande/lstdem' === $pathinfo) {
-                return array (  '_controller' => 'DemandeBundle\\Controller\\DefaultController::lstdemandeAction',  '_route' => 'lst_demande',);
+            if (0 === strpos($pathinfo, '/demande/lstdem')) {
+                // lst_demande
+                if ('/demande/lstdem' === $pathinfo) {
+                    return array (  '_controller' => 'DemandeBundle\\Controller\\DefaultController::lstdemandeAction',  '_route' => 'lst_demande',);
+                }
+
+                // listedemande_mobile
+                if ('/demande/lstdemmobile' === $pathinfo) {
+                    return array (  '_controller' => 'DemandeBundle\\Controller\\MobileDemandeController::lstdemmobileAction',  '_route' => 'listedemande_mobile',);
+                }
+
             }
 
             // add_com
@@ -148,12 +156,20 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 return $this->mergeDefaults(array_replace($matches, array('_route' => 'traitement_demande')), array (  '_controller' => 'DemandeBundle\\Controller\\DefaultController::traitementdemandeAction',));
             }
 
-            // repense_demande
-            if (0 === strpos($pathinfo, '/demande/rep') && preg_match('#^/demande/rep/(?P<iddem>[^/]++)/(?P<iduser>[^/]++)$#sD', $pathinfo, $matches)) {
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'repense_demande')), array (  '_controller' => 'DemandeBundle\\Controller\\DefaultController::repensedemandeAction',));
+            if (0 === strpos($pathinfo, '/demande/rep')) {
+                // repense_demande
+                if (preg_match('#^/demande/rep/(?P<iddem>[^/]++)/(?P<iduser>[^/]++)$#sD', $pathinfo, $matches)) {
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'repense_demande')), array (  '_controller' => 'DemandeBundle\\Controller\\DefaultController::repensedemandeAction',));
+                }
+
+                // repense_mobile
+                if (0 === strpos($pathinfo, '/demande/repensemobile') && preg_match('#^/demande/repensemobile/(?P<rep>[^/]++)/(?P<iduser>[^/]++)/(?P<iddem>[^/]++)$#sD', $pathinfo, $matches)) {
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'repense_mobile')), array (  '_controller' => 'DemandeBundle\\Controller\\MobileDemandeController::AjouterrepmobileAction',));
+                }
+
             }
 
-            if (0 === strpos($pathinfo, '/demande/mesdemande')) {
+            elseif (0 === strpos($pathinfo, '/demande/mesdemande')) {
                 // mes_demande
                 if (preg_match('#^/demande/mesdemande/(?P<iduser>[^/]++)$#sD', $pathinfo, $matches)) {
                     return $this->mergeDefaults(array_replace($matches, array('_route' => 'mes_demande')), array (  '_controller' => 'DemandeBundle\\Controller\\DefaultController::mesdemandeAction',));
@@ -208,22 +224,71 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
         }
         not_evenement_homepage:
 
-        // produit_homepage
-        if ('/produit' === $trimmedPathinfo) {
-            $ret = array (  '_controller' => 'ProduitBundle\\Controller\\DefaultController::indexAction',  '_route' => 'produit_homepage',);
-            if ('/' === substr($pathinfo, -1)) {
-                // no-op
-            } elseif ('GET' !== $canonicalMethod) {
-                goto not_produit_homepage;
-            } else {
-                return array_replace($ret, $this->redirect($rawPathinfo.'/', 'produit_homepage'));
+        if (0 === strpos($pathinfo, '/produit')) {
+            // produit_homepage
+            if ('/produit' === $trimmedPathinfo) {
+                $ret = array (  '_controller' => 'ProduitBundle\\Controller\\DefaultController::indexAction',  '_route' => 'produit_homepage',);
+                if ('/' === substr($pathinfo, -1)) {
+                    // no-op
+                } elseif ('GET' !== $canonicalMethod) {
+                    goto not_produit_homepage;
+                } else {
+                    return array_replace($ret, $this->redirect($rawPathinfo.'/', 'produit_homepage'));
+                }
+
+                return $ret;
+            }
+            not_produit_homepage:
+
+            // produit_ajout
+            if ('/produit/ajouterpro' === $pathinfo) {
+                return array (  '_controller' => 'ProduitBundle\\Controller\\DefaultController::ajoutAction',  '_route' => 'produit_ajout',);
             }
 
-            return $ret;
-        }
-        not_produit_homepage:
+            if (0 === strpos($pathinfo, '/produit/listepro')) {
+                // produit_liste
+                if ('/produit/listepro' === $pathinfo) {
+                    return array (  '_controller' => 'ProduitBundle\\Controller\\DefaultController::listeproAction',  '_route' => 'produit_liste',);
+                }
 
-        if (0 === strpos($pathinfo, '/profile')) {
+                // liste_prod
+                if ('/produit/listeprod' === $pathinfo) {
+                    return array (  '_controller' => 'ProduitBundle\\Controller\\MobileProdController::listeprodmobileAction',  '_route' => 'liste_prod',);
+                }
+
+            }
+
+            elseif (0 === strpos($pathinfo, '/produit/commande')) {
+                // commande
+                if (preg_match('#^/produit/commande/(?P<idpro>[^/]++)$#sD', $pathinfo, $matches)) {
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'commande')), array (  '_controller' => 'ProduitBundle\\Controller\\DefaultController::commandeAction',));
+                }
+
+                // commande_mobile
+                if (preg_match('#^/produit/commande/(?P<qte>[^/]++)/(?P<prixc>[^/]++)/(?P<iduser>[^/]++)/(?P<idpro>[^/]++)$#sD', $pathinfo, $matches)) {
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'commande_mobile')), array (  '_controller' => 'ProduitBundle\\Controller\\MobileProdController::CommandeMobileAction',));
+                }
+
+            }
+
+            // command_passer
+            if ('/produit/commandpasser' === $pathinfo) {
+                return array (  '_controller' => 'ProduitBundle\\Controller\\DefaultController::commandpasserAction',  '_route' => 'command_passer',);
+            }
+
+            // MesPrdouit
+            if (0 === strpos($pathinfo, '/produit/mesproduit') && preg_match('#^/produit/mesproduit/(?P<iduser>[^/]++)$#sD', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'MesPrdouit')), array (  '_controller' => 'ProduitBundle\\Controller\\DefaultController::mesproduitAction',));
+            }
+
+            // traiter_com
+            if (0 === strpos($pathinfo, '/produit/traitercom') && preg_match('#^/produit/traitercom/(?P<id>[^/]++)/(?P<iduser>[^/]++)$#sD', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'traiter_com')), array (  '_controller' => 'ProduitBundle\\Controller\\DefaultController::traitercomAction',));
+            }
+
+        }
+
+        elseif (0 === strpos($pathinfo, '/profile')) {
             // fos_user_profile_show
             if ('/profile' === $trimmedPathinfo) {
                 $ret = array (  '_controller' => 'FOS\\UserBundle\\Controller\\ProfileController::showAction',  '_route' => 'fos_user_profile_show',);
@@ -270,20 +335,72 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
 
         }
 
-        // service_homepage
-        if ('/service' === $trimmedPathinfo) {
-            $ret = array (  '_controller' => 'ServiceBundle\\Controller\\DefaultController::indexAction',  '_route' => 'service_homepage',);
-            if ('/' === substr($pathinfo, -1)) {
-                // no-op
-            } elseif ('GET' !== $canonicalMethod) {
-                goto not_service_homepage;
-            } else {
-                return array_replace($ret, $this->redirect($rawPathinfo.'/', 'service_homepage'));
+        elseif (0 === strpos($pathinfo, '/service')) {
+            // service_homepage
+            if ('/service' === $trimmedPathinfo) {
+                $ret = array (  '_controller' => 'ServiceBundle\\Controller\\DefaultController::indexAction',  '_route' => 'service_homepage',);
+                if ('/' === substr($pathinfo, -1)) {
+                    // no-op
+                } elseif ('GET' !== $canonicalMethod) {
+                    goto not_service_homepage;
+                } else {
+                    return array_replace($ret, $this->redirect($rawPathinfo.'/', 'service_homepage'));
+                }
+
+                return $ret;
+            }
+            not_service_homepage:
+
+            if (0 === strpos($pathinfo, '/service/ajouter')) {
+                // service_ajoutpage
+                if ('/service/ajouter' === $pathinfo) {
+                    return array (  '_controller' => 'ServiceBundle\\Controller\\ServiceController::AjouterAction',  '_route' => 'service_ajoutpage',);
+                }
+
+                // service_ajoutpage_confirmer
+                if ('/service/ajouter/confirmer' === $pathinfo) {
+                    $ret = array (  '_controller' => 'ServiceBundle\\Controller\\ServiceController::AjoutServiceAction',  '_route' => 'service_ajoutpage_confirmer',);
+                    if (!in_array($requestMethod, array('POST'))) {
+                        $allow = array_merge($allow, array('POST'));
+                        goto not_service_ajoutpage_confirmer;
+                    }
+
+                    return $ret;
+                }
+                not_service_ajoutpage_confirmer:
+
             }
 
-            return $ret;
+            // service_ajoutpage_delegation
+            if ('/service/delegation' === $pathinfo) {
+                $ret = array (  '_controller' => 'ServiceBundle\\Controller\\ServiceController::DelegationAction',  '_route' => 'service_ajoutpage_delegation',);
+                if (!in_array($requestMethod, array('POST'))) {
+                    $allow = array_merge($allow, array('POST'));
+                    goto not_service_ajoutpage_delegation;
+                }
+
+                return $ret;
+            }
+            not_service_ajoutpage_delegation:
+
+            // service_listservicepage
+            if ('/service/liste' === $pathinfo) {
+                return array (  '_controller' => 'ServiceBundle\\Controller\\ServiceController::ListeAction',  '_route' => 'service_listservicepage',);
+            }
+
+            // service_listservicepage_filtres
+            if ('/service/recherche' === $pathinfo) {
+                $ret = array (  '_controller' => 'ServiceBundle\\Controller\\ServiceController::RechercheFiltreAction',  '_route' => 'service_listservicepage_filtres',);
+                if (!in_array($requestMethod, array('POST'))) {
+                    $allow = array_merge($allow, array('POST'));
+                    goto not_service_listservicepage_filtres;
+                }
+
+                return $ret;
+            }
+            not_service_listservicepage_filtres:
+
         }
-        not_service_homepage:
 
         // homepage
         if ('' === $trimmedPathinfo) {

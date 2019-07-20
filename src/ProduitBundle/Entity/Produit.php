@@ -29,7 +29,7 @@ class Produit
     private $nom;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CategoriePro")
+     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Categorie")
      * @ORM\JoinColumn(name="cat",referencedColumnName="id")
      */
     private $cat;

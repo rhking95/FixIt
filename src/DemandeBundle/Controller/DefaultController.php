@@ -3,8 +3,8 @@
 namespace DemandeBundle\Controller;
 
 use AppBundle\Entity\User;
-use DemandeBundle\Entity\CategorieDem;
-use DemandeBundle\Entity\Commentaire;
+use AppBundle\Entity\Categorie;
+use AppBundle\Entity\Commentaire;
 use DemandeBundle\Entity\Demande;
 use DemandeBundle\Entity\Repense;
 use DemandeBundle\Form\DemandeType;
@@ -75,7 +75,7 @@ class DefaultController extends Controller
         $demandes = $this->getDoctrine()->getRepository
         (Demande::class)->findAll();
         $users =$this->getDoctrine()->getRepository(User::class)->findAll();
-        $coms = $this->getDoctrine()->getRepository(Commentaire::class)->findAll();
+        $coms = $this->getDoctrine()->getRepository(Commentaire::class)->findAll(array('type'=>1));
         return $this->render('@Demande/Default/lstdemande.html.twig', array('demandes' => $demandes,'users'=>$users,
         'coms'=>$coms));
 
@@ -87,9 +87,10 @@ class DefaultController extends Controller
         $iduser = $request->get('iduser');
 
         $com = new Commentaire();
-        $com->setValure($value);
-        $com->setIddem($iddem);
+        $com->setValeur($value);
+        $com->setIdobjet($iddem);
         $com->setIduser($iduser);
+        $com->setType(1);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($com);
@@ -98,7 +99,7 @@ class DefaultController extends Controller
         $demandes = $this->getDoctrine()->getRepository
         (Demande::class)->findAll();
         $users =$this->getDoctrine()->getRepository(User::class)->findAll();
-        $coms = $this->getDoctrine()->getRepository(Commentaire::class)->findAll();
+        $coms = $this->getDoctrine()->getRepository(Commentaire::class)->findAll(array('type'=>1));
         return $this->render('@Demande/Default/lstdemande.html.twig', array('demandes' => $demandes,'users'=>$users,
             'coms'=>$coms));
 
@@ -275,7 +276,7 @@ class DefaultController extends Controller
     }
 
     public function supprimercomAction($idcom){
-        $coms = $this->getDoctrine()->getRepository(Commentaire::class)->findBy(array('id'=>$idcom));
+        $coms = $this->getDoctrine()->getRepository(Commentaire::class)->findBy(array('idcom'=>$idcom));
         $com = $coms[0];
 
         $em = $this->getDoctrine()->getManager();

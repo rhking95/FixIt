@@ -1,0 +1,218 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+<html>
+<head>
+
+    <script src="{{ asset('template/js/jquery-3.4.1.min.js') }}"></script>
+
+    <script>
+        jQuery(function($) {
+            $('#gouvernoratservice').blur( function () {
+                $('#delegationservice').empty();
+                $.ajax({
+                    url: "/Fixit/web/app_dev.php/service/delegation",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "gouvernorat" : $("#gouvernoratservice option:selected").val()
+                    },
+                    async: true,
+                    success: function (data)
+                    {
+                        var obj = data.delegation;
+                        //var obj = JSON.parse(data.delegation);
+                        for (i in obj) {
+                            if (obj.hasOwnProperty(i)) {
+                                $('#delegationservice').append("<option value='"+obj[i].idAdresse+"'>"+obj[i].Libelle+"</option>");
+                            }
+                        }
+                    }
+                })
+            });
+            $('#titreservice').blur(function () {
+                $('#eroor_titreservice').text('');
+                if ($('#titreservice').val().trim().localeCompare('')==0){
+                    $('#eroor_titreservice').text('Veuillez saisir le titre du service');
+                }
+            });
+            $('#categorieservice').blur(function () {
+                $('#eroor_categorieservice').text('');
+                if ($('#categorieservice option:selected').val()==-1){
+                    $('#eroor_categorieservice').text('Veuillez choisir la catégorie du service');
+                }
+            });
+            $('#descrptionservice').blur(function () {
+                $('#eroor_descrptionservice').text('');
+                if ($('#descrptionservice').val().trim().localeCompare('')==0){
+                    $('#eroor_descrptionservice').text('Veuillez saisir la description du service');
+                }
+            });
+            $('#prixservice').blur(function () {
+                $('#eroor_prixservice').text('');
+                if ($('#prixservice').val().trim().localeCompare('')==0){
+                    $('#eroor_prixservice').text('Veuillez saisir le prix du service');
+                }
+                else if ($('#prixservice').val()<1){
+                    $('#eroor_prixservice').text('Veuillez vérifier le prix du service');
+                }
+            });
+            $('#gouvernoratservice').blur(function () {
+                $('#eroor_gouvernoratservice').text('');
+                if ($('#gouvernoratservice option:selected').val()==-1){
+                    $('#eroor_gouvernoratservice').text('Veuillez choisir le gouvernorat du service');
+                }
+            });
+            $('#delegationservice').blur(function () {
+                $('#eroor_delegationservice').text('');
+                if ($('#delegationservice option:selected').val()==-1){
+                    $('#eroor_delegationservice').text('Veuillez choisir la délegation du service');
+                }
+            });
+            $('#enregistrerservice').click(function () {
+                var titreservice=0;
+                var categorieservice=0;
+                var descrptionservice=0;
+                var prixservice=0;
+                var gouvernoratservice=0;
+                var delegationservice=0;
+                $('#eroor_titreservice').text('');
+                if ($('#titreservice').val().trim().localeCompare('')==0){
+                    $('#eroor_titreservice').text('Veuillez saisir le titre du service');
+                    titreservice=1;
+                }
+                $('#eroor_categorieservice').text('');
+                if ($('#categorieservice option:selected').val()==-1){
+                    $('#eroor_categorieservice').text('Veuillez choisir la catégorie du service');
+                    categorieservice=1;
+                }
+                $('#eroor_descrptionservice').text('');
+                if ($('#descrptionservice').val().trim().localeCompare('')==0){
+                    $('#eroor_descrptionservice').text('Veuillez saisir la description du service');
+                    descrptionservice=1;
+                }
+                $('#eroor_prixservice').text('');
+                if ($('#prixservice').val().trim().localeCompare('')==0){
+                    $('#eroor_prixservice').text('Veuillez saisir le prix du service');
+                    prixservice=1;
+                }
+                else if ($('#prixservice').val()<1){
+                    $('#eroor_prixservice').text('Veuillez vérifier le prix du service');
+                    prixservice=1;
+                }
+                $('#eroor_gouvernoratservice').text('');
+                if ($('#gouvernoratservice option:selected').val()==-1){
+                    $('#eroor_gouvernoratservice').text('Veuillez choisir le gouvernorat du service');
+                    gouvernoratservice=1;
+                }
+                $('#eroor_delegationservice').text('');
+                if ($('#delegationservice option:selected').val()==-1){
+                    $('#eroor_delegationservice').text('Veuillez choisir la délegation du service');
+                    delegationservice=1;
+                }
+                if (titreservice==0 && categorieservice==0 && descrptionservice==0 && prixservice==0 && gouvernoratservice==0 && delegationservice ==0){
+                    $.ajax({
+                        url: "/Fixit/web/app_dev.php/service/ajouter/confirmer",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            "idutilisateur" : $("#idutilisateur").val(),
+                            "titreservice" : $("#titreservice").val(),
+                            "categorieservice" : $("#categorieservice option:selected").val(),
+                            "descrptionservice" : $("#descrptionservice").val(),
+                            "prixservice" : $("#prixservice").val(),
+                            "gouvernoratservice": $("#gouvernoratservice option:selected").val(),
+                            "delegationservice" : $("#delegationservice option:selected").val()
+                        },
+                        async: true,
+                        success: function (data) {
+                            window.location.href = data.confirmation;
+                        }
+                    })
+                }
+            })
+        });
+    </script>
+
+</head>
+<body>
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Ajouter un Service</div>
+            <div class="panel-body">
+                <form role="form">
+                    <input type="text" value="{{ app.user.id }}" id="idutilisateur"  disabled hidden>
+                    <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Titre du Service :</label>
+                            <input class="form-control" placeholder="Le titre du service" id="titreservice">
+                            <small id="eroor_titreservice" class="text-danger"></small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Catégorie du service :</label>
+                            <select class="form-control" id="categorieservice">
+                                <option value="-1"  disabled data-align="center" selected>Veuillez choisisr la catégorie du service</option>
+                                {% for c in categorie %}
+                                <option value="{{ c.id }}">{{ c.nom }}</option>
+                                {% endfor %}
+                            </select>
+                            <small id="eroor_categorieservice" class="text-danger"></small>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Description du service :</label>
+                            <textarea class="form-control" rows="3" id="descrptionservice"></textarea>
+                            <small id="eroor_descrptionservice" class="text-danger"></small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Prix du Service :</label>
+                            <input type="number" class="form-control" placeholder="Le prix du service" id="prixservice">
+                            <small id="eroor_prixservice" class="text-danger"></small>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Gouvernorat :</label>
+                            <select class="form-control" id="gouvernoratservice">
+                                <option value="-1"  disabled data-align="center" selected>Veuillez choisisr le gouvernorat</option>
+                                {% for g in gouvernorat %}
+                                <option value="{{ g.idAdresse }}">{{ g.Libelle }}</option>
+                                {% endfor %}
+                            </select>
+                            <small id="eroor_gouvernoratservice" class="text-danger"></small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Délegation :</label>
+                            <select class="form-control" id="delegationservice">
+                                <option value="-1"  disabled data-align="center" selected>Veuillez choisisr la délegation</option>
+                            </select>
+                            <small id="eroor_delegationservice" class="text-danger"></small>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" align="center">
+                            <button type="button" class="btn btn-primary" id="enregistrerservice">Enregistrer le service</button>
+                            <button type="reset" class="btn btn-default">Réinitialiser les valeurs</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+{% endblock %}

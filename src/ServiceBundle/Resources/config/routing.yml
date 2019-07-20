@@ -1,3 +1,26 @@
 service_homepage:
     path:     /
     defaults: { _controller: ServiceBundle:Default:index }
+
+service_ajoutpage:
+    path:     /ajouter
+    defaults: { _controller: ServiceBundle:Service:Ajouter }
+
+service_ajoutpage_delegation:
+    path:     /delegation
+    defaults: { _controller: ServiceBundle:Service:Delegation }
+    methods: [post]
+
+service_ajoutpage_confirmer:
+    path:     /ajouter/confirmer
+    defaults: { _controller: ServiceBundle:Service:AjoutService }
+    methods: [post]
+
+service_listservicepage:
+    path:     /liste
+    defaults: { _controller: ServiceBundle:Service:Liste }
+
+service_listservicepage_filtres:
+    path:     /recherche
+    defaults: { _controller: ServiceBundle:Service:RechercheFiltre }
+    methods: [post]

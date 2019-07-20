@@ -37,15 +37,15 @@
         <form action="{{ path('add_com') }}">
             <br>
             {% for k in coms %}
-                {% if k.iddem == i.id %}
+                {% if k.idobjet == i.id %}
                     {% for j in users %}
                          {% if k.iduser == j.id %}
 
                     <div class="alert bg-primary" role="alert">
                         <svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg><label>{{ j.username ~' : ' }}</label>
-                        {{k.valure }} </span></a>
+                        {{k.valeur }} </span></a>
                         {% if k.iduser == app.user.id %}
-                            <a href="{{ path('supprimer_com',{'idcom':k.id}) }}" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                            <a href="{{ path('supprimer_com',{'idcom':k.idcom}) }}" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
 
                          {% endif %}
                     </div>

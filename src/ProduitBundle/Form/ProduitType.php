@@ -32,7 +32,7 @@ class ProduitType extends AbstractType
 
             ->add('cat',EntityType::class,
                 array(
-                    'class'=>'ProduitBundle\Entity\CategoriePro',
+                    'class'=>'AppBundle\Entity\Categorie',
                     'choice_label'=> 'nom',
                     'multiple'=>false
                 ))
