@@ -1,3 +1,15 @@
 evenement_homepage:
     path:     /
     defaults: { _controller: EvenementBundle:Default:index }
+evenement_liste:
+    path:     /liste
+    defaults: { _controller: EvenementBundle:Default:liste }
+evenement_com:
+    path:     /addcom
+    defaults: { _controller: EvenementBundle:Default:addcom }
+evenement_suppr_com:
+    path:     /supprimercom/{idcom}
+    defaults: { _controller: EvenementBundle:Default:supprimercom }
+evenement_participer:
+    path:     /participer
+    defaults: { _controller: EvenementBundle:Default:participer }

@@ -122,6 +122,21 @@
                         Mes Services
                     </a>
                 </li>
+                <li role="presentation" class="divider"></li>
+                <li><a href="{{ path('evenement_homepage',{'iduser':app.user.id}) }}">
+                        <svg class="glyph stroked pencil">
+                            <use xlink:href="#stroked-pencil"></use>
+                        </svg>
+                        Créer un événement
+                    </a>
+                </li>
+                <li><a href="{{ path('evenement_liste') }}">
+                        <svg class="glyph stroked clipboard with paper">
+                            <use xlink:href="#stroked-clipboard-with-paper"/>
+                        </svg>
+                        Liste des événements
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

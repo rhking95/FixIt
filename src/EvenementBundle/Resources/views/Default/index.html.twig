@@ -1,1 +1,94 @@
-Hello World!
+{% extends "base.html.twig" %}
+{% block content %}
+    {{ form_start(form)}}
+
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <ol class="breadcrumb">
+            <li><a href="#"><svg class="glyph stroked pencil">
+                        <use xlink:href="#stroked-pencil"></use>
+                    </svg></a>
+            </li>
+            <li class="active">Espace de création d'événements</li>
+        </ol>
+        <br>
+        <div class="panel panel-default">
+    <div class="panel-heading">
+        <p>Veuillez remplir le formulaire</p>
+    </div>
+    <div class="panel-body">
+            <table border="0">
+                <tr>
+                    <td rowspan="9" width="20px"></td>
+                </tr>
+                <tr>
+                    <td width="200px">
+                        <label>Titre</label>
+                    </td>
+                    <td>
+                        {{ form_widget(form.titre,{ 'attr': {'class': 'form-control','placeholder':'Titre'} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Catégorie</label>
+                    </td>
+                    <td>
+                        {{ form_widget(form.categorie,{ 'attr': {'class': 'form-control','placeholder':'Catégorie'} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Commence le </label>
+                    </td>
+                    <td>
+                        {{ form_widget(form.startTime,{ 'attr': {'class': 'form-control','min':"now"|date("Y-m-d")} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Se termine le </label>
+                    </td>
+                    <td>
+                        {{ form_widget(form.endTime,{ 'attr': {'class': 'form-control','min':"now"|date("Y-m-d")} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Description</label>
+                    </td>
+                    <td>
+                        {{ form_widget(form.description,{ 'attr': {'class': 'form-control'} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Adresse</label>
+                    </td>
+                    <td>
+                        {{ form_widget(form.adresse,{ 'attr': {'class': 'form-control'} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Insérer une photo</label>
+                    </td>
+                    <td>
+                        {{ form_widget(form.photo,{ 'attr': {'class': 'form-control'} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                    </td>
+                    <td align="right">
+                        <button type="submit" class="btn btn-primary" value="Créer">Créer</button>
+                    </td>
+                </tr>
+            </table>
+    </div>
+    </div></div>
+
+    <input type="text" name="iduser" value="{{ app.user.id }}" hidden>
+    {{ form_end(form)}}
+
+{% endblock %}

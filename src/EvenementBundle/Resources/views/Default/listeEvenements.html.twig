@@ -1,0 +1,151 @@
+{% extends "base.html.twig" %}
+{% block content %}
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <ol class="breadcrumb">
+            <li><a href="#">
+                    <svg class="glyph stroked clipboard with paper">
+                        <use xlink:href="#stroked-clipboard-with-paper"/>
+                    </svg>
+                </a>
+            </li>
+            <li class="active">Liste des événements en cours</li>
+        </ol>
+        <br>
+
+        <div class="panel-body chat">
+            {% for i in evenement %}
+                <div class="col-md-pull-1">
+        <span class="chat-img pull-left">
+            <img src="{{ asset('./img/' ~ i.photo ) }}" class="img-circle" height="150" width="150">
+            <br><strong class="primary-font">Créé par : </strong> {{ i.iduser.username }}
+            <br><strong class="primary-font">Date de création : </strong> {{ i.date|date("Y-m-d H:i:s") }}
+        </span>
+
+
+                    <div class="panel panel-success col-md-offset-3">
+                        <div class="panel-heading">
+                            <h4 style="color: green">
+                                <b>Titre : {{ i.titre }}
+                                    <a href="">
+                                        <svg class="glyph stroked pencil pull-right"><use xlink:href="#stroked-pencil"/>
+                                        </svg>
+                                    </a>
+                                </b>
+                            </h4>
+                            <h5 style="color: green">Date et heure : {{ i.startTime|date("Y-m-d H:i:s") }}</h5>
+                        </div>
+                        <div class="panel-body">
+                            <strong class="primary-font">Catégorie d'événement : </strong>{{ i.categorie.nom }}
+                            <br>
+                            <strong class="primary-font">Se termine le : </strong>{{ i.endTime|date("Y-m-d H:i:s") }}
+                            <br>
+                            <strong class="primary-font">Adresse : </strong>{{ i.adresse }}
+                            <br>
+                            <strong class="primary-font">Description : </strong>{{ i.description }}
+                            <br>
+                        </div>
+
+                        <div class="panel-footer">
+                            <ol class="breadcrumb">
+                                <li><a href="#">
+                                        <svg class="glyph stroked male user ">
+                                            <use xlink:href="#stroked-male-user"/>
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="active">Nombre de participants : {{ i.nbrParticipants }}</li>
+                                <button class="btn btn-danger pull-right">
+                                    <a href="{{path('evenement_participer',{'id':i.id})}}">
+                                        Participer
+                                    </a>
+                                </button>
+                                <button id="{{ i.id ~ '0' }}" class="btn btn-primary pull-right">
+                                    Afficher les commentaires</button>
+                                <button id="{{ i.id ~ '1' }}" class="btn btn-primary pull-right" hidden>
+                                    Masquer les commentaires
+                                </button>
+
+
+                                <div id="{{ i.id ~ '2' }}" hidden>
+                                    <form action="{{ path('evenement_com') }}">
+                                        <br>
+                                        {% for k in coms %}
+                                            {% if k.idobjet == i.id %}
+                                                {% for j in users %}
+                                                    {% if k.iduser == j.id %}
+
+                                                        <div class="alert bg-primary" role="alert">
+                                                            <svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg><label>{{ j.username ~' : ' }}</label>
+                                                            {{k.valeur }} </span></a>
+                                                            {% if k.iduser == app.user.id %}
+                                                                <a href="{{ path('evenement_suppr_com',{'idcom':k.idcom}) }}" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+
+                                                            {% endif %}
+                                                        </div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <table>
+                                            <tr>
+                                                <td width="1200px" class="chat">
+                                                    <textarea class="form-control" name="value" required autofocus></textarea>
+                                                </td>
+                                                <td width="20px"></td>
+                                                <td>
+                                                    <input type="submit" value="Envoyer" class="btn btn-primary">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <input type="text" name="ideve" hidden value="{{ i.id }}">
+                                        <input type="text" name="iduser" hidden value="{{ app.user.id }}">
+                                        <br>
+                                    </form>
+                                </div>
+
+
+
+                                <script>
+                                    $('#{{ i.id ~ '0' }}').click(
+                                        function () {
+                                            $('#{{ i.id ~ '2' }}').show();
+                                            $('#{{ i.id ~ '0' }}').hide();
+                                            $('#{{ i.id ~ '1' }}').show();
+                                        }
+                                    );
+
+                                    $('#{{ i.id ~ '1' }}').click(
+                                        function () {
+                                            $('#{{ i.id ~ '2' }}').hide();
+                                            $('#{{ i.id ~ '0' }}').show();
+                                            $('#{{ i.id ~ '1' }}').hide();
+                                        }
+                                    );
+
+                                </script>
+
+                            </ol>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            {% endfor %}
+        </div>
+
+        <ol class="breadcrumb">
+            <li><a href="#">
+                    <svg class="glyph stroked clipboard with paper">
+                        <use xlink:href="#stroked-clipboard-with-paper"/>
+                    </svg>
+                </a>
+            </li>
+            <li class="active">Liste des événements passés</li>
+        </ol>
+        <br>
+
+
+    </div>
+
+{% endblock %}

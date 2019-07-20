@@ -209,22 +209,45 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
 
         }
 
-        // evenement_homepage
-        if ('/event' === $trimmedPathinfo) {
-            $ret = array (  '_controller' => 'EvenementBundle\\Controller\\DefaultController::indexAction',  '_route' => 'evenement_homepage',);
-            if ('/' === substr($pathinfo, -1)) {
-                // no-op
-            } elseif ('GET' !== $canonicalMethod) {
-                goto not_evenement_homepage;
-            } else {
-                return array_replace($ret, $this->redirect($rawPathinfo.'/', 'evenement_homepage'));
+        elseif (0 === strpos($pathinfo, '/event')) {
+            // evenement_homepage
+            if ('/event' === $trimmedPathinfo) {
+                $ret = array (  '_controller' => 'EvenementBundle\\Controller\\DefaultController::indexAction',  '_route' => 'evenement_homepage',);
+                if ('/' === substr($pathinfo, -1)) {
+                    // no-op
+                } elseif ('GET' !== $canonicalMethod) {
+                    goto not_evenement_homepage;
+                } else {
+                    return array_replace($ret, $this->redirect($rawPathinfo.'/', 'evenement_homepage'));
+                }
+
+                return $ret;
+            }
+            not_evenement_homepage:
+
+            // evenement_liste
+            if ('/event/liste' === $pathinfo) {
+                return array (  '_controller' => 'EvenementBundle\\Controller\\DefaultController::listeAction',  '_route' => 'evenement_liste',);
             }
 
-            return $ret;
-        }
-        not_evenement_homepage:
+            // evenement_com
+            if ('/event/addcom' === $pathinfo) {
+                return array (  '_controller' => 'EvenementBundle\\Controller\\DefaultController::addcomAction',  '_route' => 'evenement_com',);
+            }
 
-        if (0 === strpos($pathinfo, '/produit')) {
+            // evenement_suppr_com
+            if (0 === strpos($pathinfo, '/event/supprimercom') && preg_match('#^/event/supprimercom/(?P<idcom>[^/]++)$#sD', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'evenement_suppr_com')), array (  '_controller' => 'EvenementBundle\\Controller\\DefaultController::supprimercomAction',));
+            }
+
+            // evenement_participer
+            if ('/event/participer' === $pathinfo) {
+                return array (  '_controller' => 'EvenementBundle\\Controller\\DefaultController::participerAction',  '_route' => 'evenement_participer',);
+            }
+
+        }
+
+        elseif (0 === strpos($pathinfo, '/produit')) {
             // produit_homepage
             if ('/produit' === $trimmedPathinfo) {
                 $ret = array (  '_controller' => 'ProduitBundle\\Controller\\DefaultController::indexAction',  '_route' => 'produit_homepage',);
