@@ -26,12 +26,12 @@
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand"><span>| Fix It |</span>| Rejoignez-nous |</a>
+                    <a class="navbar-brand"><span>| Fix It |</span>| bienvenu |</a>
                     <ul class="user-menu">
                         <li class="dropdown pull-right">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ app.user.username }} <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ path('fos_user_profile_edit') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Profile</a></li>
+                                <li><a href="{{ path('fos_user_profile_edit') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Profil</a></li>
                                 <li><a href="{{ path('fos_user_security_logout') }}"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Logout</a></li>
                             </ul>
                         </li>
@@ -56,87 +56,141 @@
                 </li>
 
                 <li role="presentation" class="divider"></li>
-                <li><a href="{{ path('lst_demande') }}">
-                        <svg class="glyph stroked clipboard with paper">
-                            <use xlink:href="#stroked-clipboard-with-paper"/>
-                        </svg>
-                        Liste des demandes
+
+                <li class="parent ">
+                    <a href="#">
+					<span data-toggle="collapse" href="#sub-item-5">
+						<svg class="glyph stroked chevron-down">
+							<use xlink:href="#stroked-chevron-down"></use>
+						</svg>
+					</span> Demandes
                     </a>
-                </li>
-                <li><a href="{{ path('demande') }}">
-                        <svg class="glyph stroked pencil">
-                            <use xlink:href="#stroked-pencil"/>
-                        </svg>
-                        Creation de demande
-                    </a>
+                    <ul class="children collapse in" id="sub-item-5" style="">
+                        <li><a href="{{ path('lst_demande') }}">
+                                <svg class="glyph stroked clipboard with paper">
+                                    <use xlink:href="#stroked-clipboard-with-paper"/>
+                                </svg>
+                                Liste des demandes
+                            </a>
+                        </li>
+                        <li><a href="{{ path('demande') }}">
+                                <svg class="glyph stroked pencil">
+                                    <use xlink:href="#stroked-pencil"/>
+                                </svg>
+                                Creation de demande
+                            </a>
+                        </li>
+
+                        <li><a href="{{ path('mes_demande',{'iduser': app.user.id}) }}">
+                                <svg class="glyph stroked notepad ">
+                                    <use xlink:href="#stroked-notepad"/>
+                                </svg>
+                                Mes demandes
+                            </a>
+                        </li>
+                        <li><a href="{{ path('Gestion_Rep',{'iduser': app.user.id}) }}">
+                                <svg class="glyph stroked notepad ">
+                                    <use xlink:href="#stroked-notepad"/>
+                                </svg>
+                                Mes repenses
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
-                <li><a href="{{ path('mes_demande',{'iduser': app.user.id}) }}">
-                        <svg class="glyph stroked notepad ">
-                            <use xlink:href="#stroked-notepad"/>
-                        </svg>
-                        Mes demandes
+                <li role="presentation" class="divider"></li>
+
+                <li class="parent">
+                    <a href="">
+					<span data-toggle="collapse" href="#sub-item-2">
+						<svg class="glyph stroked chevron-down">
+							<use xlink:href="#stroked-chevron-down"></use>
+						</svg>
+					</span> Produits
                     </a>
+                    <ul class="children collapse in" id="sub-item-2" style="">
+                        <li><a href="{{ path('produit_ajout') }}">
+                                <svg class="glyph stroked pencil">
+                                    <use xlink:href="#stroked-pencil"/>
+                                </svg>
+                                Ajout D'un Produit
+                            </a>
+                        </li>
+                        <li><a href="{{ path('produit_liste') }}">
+                                <svg class="glyph stroked notepad ">
+                                    <use xlink:href="#stroked-notepad"/>
+                                </svg>
+                                Liste Produit
+                            </a>
+                        </li>
+                        <li><a href="{{ path('MesPrdouit',{'iduser':app.user.id}) }}">
+                                <svg class="glyph stroked notepad ">
+                                    <use xlink:href="#stroked-notepad"/>
+                                </svg>
+                                Mes produits
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li><a href="{{ path('Gestion_Rep',{'iduser': app.user.id}) }}">
-                        <svg class="glyph stroked notepad ">
-                            <use xlink:href="#stroked-notepad"/>
-                        </svg>
-                        Mes repenses
+
+                <li role="presentation" class="divider"></li>
+
+                <li class="parent ">
+                    <a href="#">
+					<span data-toggle="collapse" href="#sub-item-3">
+						<svg class="glyph stroked chevron-down">
+							<use xlink:href="#stroked-chevron-down"></use>
+						</svg>
+					</span> Services
                     </a>
+                    <ul class="children collapse in" id="sub-item-3" style="">
+                        <li><a href="{{ path('service_ajoutpage',{'iduser':app.user.id}) }}">
+                                <svg class="glyph stroked notepad ">
+                                    <use xlink:href="#stroked-pencil"/>
+                                </svg>
+                                Ajouter Service
+                            </a>
+                        </li>
+                        <li><a href="{{ path('service_listservicepage',{'iduser':app.user.id}) }}">
+                                <svg class="glyph stroked notepad ">
+                                    <use xlink:href="#stroked-notepad"/>
+                                </svg>
+                                Mes Services
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li role="presentation" class="divider"></li>
+
+                <li class="parent">
+                    <a href="#">
+                        <span data-toggle="collapse" href="#sub-item-1">
+                        <svg class="glyph stroked chevron-down">
+                            <use xlink:href="#stroked-chevron-down"></use>
+                        </svg>
+                    </span> Evenements
+                    </a>
+
+                    <ul class="children collapse in" id="sub-item-1" style="">
+                        <li><a href="{{ path('evenement_homepage',{'iduser':app.user.id}) }}">
+                                <svg class="glyph stroked pencil">
+                                    <use xlink:href="#stroked-pencil"></use>
+                                </svg>
+                                Créer un événement
+                            </a>
+                        </li>
+                        <li><a href="{{ path('evenement_liste') }}">
+                                <svg class="glyph stroked clipboard with paper">
+                                    <use xlink:href="#stroked-clipboard-with-paper"/>
+                                </svg>
+                                Liste des événements
+                            </a>
+                        </li>
+                    </ul>
+
                 </li>
                 <li role="presentation" class="divider"></li>
-                <li><a href="{{ path('produit_ajout') }}">
-                        <svg class="glyph stroked pencil">
-                            <use xlink:href="#stroked-pencil"/>
-                        </svg>
-                        Ajout D'un Produit
-                    </a>
-                </li>
-                <li><a href="{{ path('produit_liste') }}">
-                        <svg class="glyph stroked notepad ">
-                            <use xlink:href="#stroked-notepad"/>
-                        </svg>
-                        Liste Produit
-                    </a>
-                </li>
-                <li><a href="{{ path('MesPrdouit',{'iduser':app.user.id}) }}">
-                        <svg class="glyph stroked notepad ">
-                            <use xlink:href="#stroked-notepad"/>
-                        </svg>
-                        Mes produits
-                    </a>
-                </li>
-                <li role="presentation" class="divider"></li>
-                <li><a href="{{ path('service_ajoutpage',{'iduser':app.user.id}) }}">
-                        <svg class="glyph stroked notepad ">
-                            <use xlink:href="#stroked-pencil"/>
-                        </svg>
-                        Ajouter Service
-                    </a>
-                </li>
-                <li><a href="{{ path('service_listservicepage',{'iduser':app.user.id}) }}">
-                        <svg class="glyph stroked notepad ">
-                            <use xlink:href="#stroked-notepad"/>
-                        </svg>
-                        Mes Services
-                    </a>
-                </li>
-                <li role="presentation" class="divider"></li>
-                <li><a href="{{ path('evenement_homepage',{'iduser':app.user.id}) }}">
-                        <svg class="glyph stroked pencil">
-                            <use xlink:href="#stroked-pencil"></use>
-                        </svg>
-                        Créer un événement
-                    </a>
-                </li>
-                <li><a href="{{ path('evenement_liste') }}">
-                        <svg class="glyph stroked clipboard with paper">
-                            <use xlink:href="#stroked-clipboard-with-paper"/>
-                        </svg>
-                        Liste des événements
-                    </a>
-                </li>
             </ul>
         </div>
     </div>

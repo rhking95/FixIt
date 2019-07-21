@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class EvenementType extends AbstractType
 {
@@ -24,16 +25,15 @@ class EvenementType extends AbstractType
                     'choice_label' => 'nom',
                     'multiple' => false))
             ->remove('date')
-            ->add('startTime',DateType::class,
-                array(
-                    'widget' => 'single_text',
-                    'format' => 'yyyy-MM-dd',
-                ))
-            ->add('endTime',DateType::class,
-                array(
-                    'widget' => 'single_text',
-                    'format' => 'yyyy-MM-dd'
-                ))
+            ->add('startTime', DateTimeType::class, [
+                'widget' => 'single_text',
+                'label' => false
+
+            ])
+            ->add('endTime', DateTimeType::class, [
+                'widget' => 'single_text',
+                'label' => false
+            ])
             ->add('description',TextareaType::class)
             ->add('adresse')
             ->add('photo',FileType::class);

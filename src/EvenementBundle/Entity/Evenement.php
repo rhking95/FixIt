@@ -141,7 +141,7 @@ class Evenement
     public function setTitre($titre)
     {
         $this->titre = $titre;
-    
+
         return $this;
     }
 
@@ -165,7 +165,7 @@ class Evenement
     public function setCategorie($categorie)
     {
         $this->categorie = $categorie;
-    
+
         return $this;
     }
 
@@ -189,7 +189,7 @@ class Evenement
     public function setDate($date)
     {
         $this->date = $date;
-    
+
         return $this;
     }
 
@@ -213,7 +213,7 @@ class Evenement
     public function setStartTime($startTime)
     {
         $this->startTime = $startTime;
-    
+
         return $this;
     }
 
@@ -237,7 +237,7 @@ class Evenement
     public function setEndTime($endTime)
     {
         $this->endTime = $endTime;
-    
+
         return $this;
     }
 
@@ -261,7 +261,7 @@ class Evenement
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
@@ -285,7 +285,7 @@ class Evenement
     public function setAdresse($adresse)
     {
         $this->adresse = $adresse;
-    
+
         return $this;
     }
 
@@ -313,6 +313,65 @@ class Evenement
     public function setIduser($iduser)
     {
         $this->iduser = $iduser;
+    }
+
+
+    /**
+     * Many evenements have Many participants.
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinTable(name="participants_events",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="evenement_id", referencedColumnName="id")}
+     *      )
+     */
+    private $participants;
+
+    /**
+     * @return mixed
+     */
+    public function getParticipants()
+    {
+        return $this->participants;
+    }
+
+    /**
+     * @param mixed $participants
+     */
+    public function setParticipants($participants)
+    {
+        $this->participants = $participants;
+    }
+
+    /**
+     * Evenement constructor.
+     */
+    public function __construct()
+    {
+        $this->participants= new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add participant
+     *
+     * @param \AppBundle\Entity\User $participant
+     *
+     * @return Evenement
+     */
+    public function addParticipant(\AppBundle\Entity\User $participant)
+    {
+        $this->participants[] = $participant;
+
+        return $this;
+    }
+
+    /**
+     * Remove participant
+     *
+     * @param \AppBundle\Entity\User $participant
+     */
+    public function removeParticipant(\AppBundle\Entity\User $participant)
+    {
+        $this->participants->removeElement($participant);
     }
 
 

@@ -34,3 +34,7 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+
+    EvenementBundle\Email\Mailer:
+        public: true
+        arguments: ['@mailer']

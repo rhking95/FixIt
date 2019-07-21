@@ -235,14 +235,29 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 return array (  '_controller' => 'EvenementBundle\\Controller\\DefaultController::addcomAction',  '_route' => 'evenement_com',);
             }
 
+            // evenement_annuler
+            if (0 === strpos($pathinfo, '/event/annuler') && preg_match('#^/event/annuler/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'evenement_annuler')), array (  '_controller' => 'EvenementBundle\\Controller\\DefaultController::annulerAction',));
+            }
+
             // evenement_suppr_com
             if (0 === strpos($pathinfo, '/event/supprimercom') && preg_match('#^/event/supprimercom/(?P<idcom>[^/]++)$#sD', $pathinfo, $matches)) {
                 return $this->mergeDefaults(array_replace($matches, array('_route' => 'evenement_suppr_com')), array (  '_controller' => 'EvenementBundle\\Controller\\DefaultController::supprimercomAction',));
             }
 
             // evenement_participer
-            if ('/event/participer' === $pathinfo) {
-                return array (  '_controller' => 'EvenementBundle\\Controller\\DefaultController::participerAction',  '_route' => 'evenement_participer',);
+            if (0 === strpos($pathinfo, '/event/participer') && preg_match('#^/event/participer(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'evenement_participer')), array (  '_controller' => 'EvenementBundle\\Controller\\DefaultController::participerAction',));
+            }
+
+            // evenement_edit
+            if (preg_match('#^/event/(?P<id>[^/]++)/modifier$#sD', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'evenement_edit')), array (  '_controller' => 'EvenementBundle\\Controller\\DefaultController::editAction',));
+            }
+
+            // evenement_delete
+            if (preg_match('#^/event/(?P<id>[^/]++)/supprimer$#sD', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'evenement_delete')), array (  '_controller' => 'EvenementBundle\\Controller\\DefaultController::deleteAction',));
             }
 
         }

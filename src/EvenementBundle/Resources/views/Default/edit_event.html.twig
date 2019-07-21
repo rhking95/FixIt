@@ -1,0 +1,87 @@
+{% extends "base.html.twig" %}
+{% block title %}Modifier l'évènement{% endblock %}
+{% block content %}
+    {{ form_start(edit_form)}}
+
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <ol class="breadcrumb">
+            <li><a href="#"><svg class="glyph stroked pencil">
+                        <use xlink:href="#stroked-pencil"></use>
+                    </svg></a>
+            </li>
+            <li class="active">Modifier un événement</li>
+        </ol>
+        <br>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <p>Veuillez remplir le formulaire</p>
+            </div>
+            <div class="panel-body">
+                <table border="0">
+                    <tr>
+                        <td rowspan="9" width="20px"></td>
+                    </tr>
+                    <tr>
+                        <td width="200px">
+                            <label>Titre</label>
+                        </td>
+                        <td>
+                            {{ form_widget(edit_form.titre,{ 'attr': {'class': 'form-control'} } ) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Catégorie</label>
+                        </td>
+                        <td>
+                            {{ form_widget(edit_form.categorie,{ 'attr': {'class': 'form-control'} } ) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Commence le </label>
+                        </td>
+                        <td>
+                            {{ form_widget(edit_form.startTime,{ 'attr': {'class': 'form-control'} } ) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Se termine le </label>
+                        </td>
+                        <td>
+                            {{ form_widget(edit_form.endTime,{ 'attr': {'class': 'form-control'} } ) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Description</label>
+                        </td>
+                        <td>
+                            {{ form_widget(edit_form.description,{ 'attr': {'class': 'form-control'} } ) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Adresse</label>
+                        </td>
+                        <td>
+                            {{ form_widget(edit_form.adresse,{ 'attr': {'class': 'form-control'} } ) }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+
+                        </td>
+                        <td align="right">
+                            <button type="submit" class="btn btn-primary" value="Créer">Modifier</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div></div>
+
+    {{ form_end(edit_form)}}
+
+{% endblock %}

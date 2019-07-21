@@ -1,151 +1,452 @@
 {% extends "base.html.twig" %}
+{% block title %}Liste des évènements{% endblock %}
 {% block content %}
     <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-        <ol class="breadcrumb">
-            <li><a href="#">
-                    <svg class="glyph stroked clipboard with paper">
-                        <use xlink:href="#stroked-clipboard-with-paper"/>
-                    </svg>
-                </a>
-            </li>
-            <li class="active">Liste des événements en cours</li>
-        </ol>
-        <br>
 
-        <div class="panel-body chat">
-            {% for i in evenement %}
-                <div class="col-md-pull-1">
+    <ol class="breadcrumb">
+        <li><a href="#">
+                <svg class="glyph stroked clipboard with paper">
+                    <use xlink:href="#stroked-clipboard-with-paper"/>
+                </svg>
+            </a>
+        </li>
+        <li class="active">Liste des événements en cours</li>
+    </ol>
+    <br>
+    <div class="panel panel-success">
+
+        <div class="panel-footer" style="height: 50px">
+
+            {{ form_start(formulaire) }}
+            <table style="margin-left:10%">
+
+                <tr>
+                    <td width="10%">Rechercher :</td>
+                    <td width="5%"></td>
+                    <td width="30%">{{ form_widget(formulaire.search) }}</td>
+                    <td width="5%"></td>
+                    <td width="30%">{{ form_widget(formulaire.date) }}</td>
+                    <td width="5%"></td>
+                    <td width="30%">{{ form_widget(formulaire.send) }}</td>
+                </tr>
+
+            </table>
+            {{ form_end(formulaire) }}
+
+        </div>
+    </div>
+
+    <div class="panel-body chat">
+        {% for i in evenement|reverse %}
+            <div class="col-md-pull-1">
         <span class="chat-img pull-left">
             <img src="{{ asset('./img/' ~ i.photo ) }}" class="img-circle" height="150" width="150">
             <br><strong class="primary-font">Créé par : </strong> {{ i.iduser.username }}
-            <br><strong class="primary-font">Date de création : </strong> {{ i.date|date("Y-m-d H:i:s") }}
+            <br><strong class="primary-font">Date de création : </strong> {{ i.date|date("d-m-Y H:i") }}
         </span>
 
 
-                    <div class="panel panel-success col-md-offset-3">
-                        <div class="panel-heading">
-                            <h4 style="color: green">
-                                <b>Titre : {{ i.titre }}
-                                    <a href="">
-                                        <svg class="glyph stroked pencil pull-right"><use xlink:href="#stroked-pencil"/>
-                                        </svg>
-                                    </a>
-                                </b>
-                            </h4>
-                            <h5 style="color: green">Date et heure : {{ i.startTime|date("Y-m-d H:i:s") }}</h5>
-                        </div>
-                        <div class="panel-body">
-                            <strong class="primary-font">Catégorie d'événement : </strong>{{ i.categorie.nom }}
-                            <br>
-                            <strong class="primary-font">Se termine le : </strong>{{ i.endTime|date("Y-m-d H:i:s") }}
-                            <br>
-                            <strong class="primary-font">Adresse : </strong>{{ i.adresse }}
-                            <br>
-                            <strong class="primary-font">Description : </strong>{{ i.description }}
-                            <br>
-                        </div>
+                <div class="panel panel-success col-md-offset-3">
+                    <div class="panel-heading">
+                        <h4 style="color: green">
+                            <b>Titre : {{ i.titre }}</b>
 
-                        <div class="panel-footer">
-                            <ol class="breadcrumb">
-                                <li><a href="#">
-                                        <svg class="glyph stroked male user ">
-                                            <use xlink:href="#stroked-male-user"/>
-                                        </svg>
-                                    </a>
-                                </li>
-                                <li class="active">Nombre de participants : {{ i.nbrParticipants }}</li>
-                                <button class="btn btn-danger pull-right">
-                                    <a href="{{path('evenement_participer',{'id':i.id})}}">
-                                        Participer
-                                    </a>
-                                </button>
-                                <button id="{{ i.id ~ '0' }}" class="btn btn-primary pull-right">
-                                    Afficher les commentaires</button>
-                                <button id="{{ i.id ~ '1' }}" class="btn btn-primary pull-right" hidden>
-                                    Masquer les commentaires
-                                </button>
+                            {% if i.iduser == app.user %}
+                                <a href="{{ path('evenement_delete', { 'id': i.id }) }}">
+                                    <svg class="glyph stroked cancel pull-right"><use xlink:href="#stroked-cancel"/></svg>
+                                </a>
+                                <a href="{{ path('evenement_edit', { 'id': i.id }) }}">
+                                    <svg class="glyph stroked pencil pull-right"><use xlink:href="#stroked-pencil"/>
+                                    </svg>
+                                </a>
+                            {% endif %}
+                        </h4>
 
-
-                                <div id="{{ i.id ~ '2' }}" hidden>
-                                    <form action="{{ path('evenement_com') }}">
-                                        <br>
-                                        {% for k in coms %}
-                                            {% if k.idobjet == i.id %}
-                                                {% for j in users %}
-                                                    {% if k.iduser == j.id %}
-
-                                                        <div class="alert bg-primary" role="alert">
-                                                            <svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg><label>{{ j.username ~' : ' }}</label>
-                                                            {{k.valeur }} </span></a>
-                                                            {% if k.iduser == app.user.id %}
-                                                                <a href="{{ path('evenement_suppr_com',{'idcom':k.idcom}) }}" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
-
-                                                            {% endif %}
-                                                        </div>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            {% endif %}
-                                        {% endfor %}
-                                        <table>
-                                            <tr>
-                                                <td width="1200px" class="chat">
-                                                    <textarea class="form-control" name="value" required autofocus></textarea>
-                                                </td>
-                                                <td width="20px"></td>
-                                                <td>
-                                                    <input type="submit" value="Envoyer" class="btn btn-primary">
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <input type="text" name="ideve" hidden value="{{ i.id }}">
-                                        <input type="text" name="iduser" hidden value="{{ app.user.id }}">
-                                        <br>
-                                    </form>
-                                </div>
-
-
-
-                                <script>
-                                    $('#{{ i.id ~ '0' }}').click(
-                                        function () {
-                                            $('#{{ i.id ~ '2' }}').show();
-                                            $('#{{ i.id ~ '0' }}').hide();
-                                            $('#{{ i.id ~ '1' }}').show();
-                                        }
-                                    );
-
-                                    $('#{{ i.id ~ '1' }}').click(
-                                        function () {
-                                            $('#{{ i.id ~ '2' }}').hide();
-                                            $('#{{ i.id ~ '0' }}').show();
-                                            $('#{{ i.id ~ '1' }}').hide();
-                                        }
-                                    );
-
-                                </script>
-
-                            </ol>
-
-                        </div>
+                        <h5 style="color: green">Date et heure : {{ i.startTime|date("d-m-Y H:i") }}</h5>
                     </div>
+                    <div class="panel-body">
+                        <strong class="primary-font">Catégorie d'événement : </strong>{{ i.categorie.nom }}
+                        <br>
+                        <strong class="primary-font">Se termine le : </strong>{{ i.endTime|date("d-m-Y H:i") }}
+                        <br>
+                        <strong class="primary-font">Adresse : </strong>{{ i.adresse }}
+                        <br>
+                        <strong class="primary-font">Description : </strong>{{ i.description }}
+                        <br>
+                    </div>
+
+                    <div class="panel-footer">
+                        <ol class="breadcrumb">
+                            <li><a
+                                        data-toggle="modal" data-target="{{ '#exampleModal' ~ i.id }}"
+
+                                >
+                                    <svg class="glyph stroked male user ">
+                                        <use xlink:href="#stroked-male-user"/>
+                                    </svg>
+                                </a>
+                            </li>
+
+                            <li class="active">Nombre de participants : {{ i.participants|length }}</li>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="{{ 'exampleModal' ~ i.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Liste des participants</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            {% for participant in i.participants %}
+                                                {{ participant.username }}
+                                            {% else%}
+                                                Liste est vide..
+                                            {% endfor%}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            {% if app.user in i.participants %}
+
+                                <a href="{{ path('evenement_annuler', { 'id': i.id }) }}">
+                                    <button class="btn btn-danger pull-right">Annuler</button>
+                                </a>
+
+                            {% else %}
+
+                                <a href="{{ path('evenement_participer', { 'id': i.id }) }}">
+                                    <button class="btn btn-danger pull-right">Participer</button>
+                                </a>
+
+                            {% endif %}
+
+
+
+                            <button id="{{ i.id ~ '0' }}" class="btn btn-primary pull-right">
+                                Afficher les commentaires</button>
+                            <button id="{{ i.id ~ '1' }}" class="btn btn-primary pull-right" hidden>
+                                Masquer les commentaires
+                            </button>
+
+                            <div id="{{ i.id ~ '2' }}" hidden>
+                                <form action="{{ path('evenement_com') }}">
+                                    <br>
+                                    {% for k in coms %}
+                                        {% if k.idobjet == i.id %}
+                                            {% for j in users %}
+                                                {% if k.iduser == j.id %}
+
+                                                    <div class="alert bg-primary" role="alert">
+                                                        <svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg><label>{{ j.username ~' : ' }}</label>
+                                                        {{k.valeur }} </span></a>
+                                                        {% if k.iduser == app.user.id %}
+                                                            <a href="{{ path('evenement_suppr_com',{'idcom':k.idcom}) }}" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+
+                                                        {% endif %}
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <table>
+                                        <tr>
+                                            <td width="1200px" class="chat">
+                                                <textarea class="form-control" name="value" required autofocus></textarea>
+                                            </td>
+                                            <td width="20px"></td>
+                                            <td>
+                                                <input type="submit" value="Envoyer" class="btn btn-primary">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <input type="text" name="idobject" hidden value="{{ i.id }}">
+                                    <input type="text" name="iduser" hidden value="{{ app.user.id }}">
+                                    <br>
+                                </form>
+                            </div>
+
+                            <script>
+                                $('#{{ i.id ~ '0' }}').click(
+                                    function () {
+                                        $('#{{ i.id ~ '2' }}').show();
+                                        $('#{{ i.id ~ '0' }}').hide();
+                                        $('#{{ i.id ~ '1' }}').show();
+                                    }
+                                );
+
+                                $('#{{ i.id ~ '1' }}').click(
+                                    function () {
+                                        $('#{{ i.id ~ '2' }}').hide();
+                                        $('#{{ i.id ~ '0' }}').show();
+                                        $('#{{ i.id ~ '1' }}').hide();
+                                    }
+                                );
+
+                            </script>
+
+                        </ol>
+
+                    </div>
+
+
+                    <div class="panel-footer">
+                        <ol class="breadcrumb">
+
+
+                            <li><a>
+                                    <svg class="glyph stroked chain"><use xlink:href="#stroked-chain"/></svg>
+                                </a>
+                                Partager l'évenement :</li> <br><br>
+
+
+
+
+                            <button class="button share_twitter" data-url="http://127.0.0.1:8000/event/liste">
+                                Partager sur twitter
+                            </button>
+
+                            <button class="button share_facebook" data-url="http://127.0.0.1:8000/event/liste">
+                                Partager sur facebook
+                            </button>
+
+                            <button class="button share_gplus" data-url="http://127.0.0.1:8000/event/liste">
+                                Partager sur google+
+                            </button>
+                            <button class="button share_linkedin" data-url="http://127.0.0.1:8000/event/liste">
+                                Partager sur linkedin
+                            </button>
+
+                        </ol>
+                    </div>
+
+
 
                 </div>
 
-            {% endfor %}
-        </div>
+            </div>
 
-        <ol class="breadcrumb">
-            <li><a href="#">
-                    <svg class="glyph stroked clipboard with paper">
-                        <use xlink:href="#stroked-clipboard-with-paper"/>
-                    </svg>
-                </a>
-            </li>
-            <li class="active">Liste des événements passés</li>
-        </ol>
-        <br>
-
-
+        {% endfor %}
     </div>
+
+    <ol class="breadcrumb">
+        <li><a href="#">
+                <svg class="glyph stroked clipboard with paper">
+                    <use xlink:href="#stroked-clipboard-with-paper"/>
+                </svg>
+            </a>
+        </li>
+        <li class="active">Liste des événements passés</li>
+    </ol>
+    <br>
+
+
+
+    <div class="panel-body chat">
+        {% for i in evenementPasses|reverse %}
+            <div class="col-md-pull-1">
+        <span class="chat-img pull-left">
+            <img src="{{ asset('./img/' ~ i.photo ) }}" class="img-circle" height="150" width="150">
+            <br><strong class="primary-font">Créé par : </strong> {{ i.iduser.username }}
+            <br><strong class="primary-font">Date de création : </strong> {{ i.date|date("d-m-Y H:i") }}
+        </span>
+
+
+                <div class="panel panel-success col-md-offset-3">
+                    <div class="panel-heading">
+                        <h4 style="color: green">
+                            <b>Titre : {{ i.titre }}</b></h4>
+
+
+
+                        <h5 style="color: green">Date et heure : {{ i.startTime|date("d-m-Y H:i") }}</h5>
+                    </div>
+                    <div class="panel-body">
+                        <strong class="primary-font">Catégorie d'événement : </strong>{{ i.categorie.nom }}
+                        <br>
+                        <strong class="primary-font">Se termine le : </strong>{{ i.endTime|date("d-m-Y H:i") }}
+                        <br>
+                        <strong class="primary-font">Adresse : </strong>{{ i.adresse }}
+                        <br>
+                        <strong class="primary-font">Description : </strong>{{ i.description }}
+                        <br>
+                    </div>
+
+                    <div class="panel-footer">
+                        <ol class="breadcrumb">
+                            <li><a
+                                        data-toggle="modal" data-target="{{ '#exampleModal' ~ i.id }}"
+
+                                >
+                                    <svg class="glyph stroked male user ">
+                                        <use xlink:href="#stroked-male-user"/>
+                                    </svg>
+                                </a>
+                            </li>
+
+                            <li class="active">Nombre de participants : {{ i.participants|length }}</li>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="{{ 'exampleModal' ~ i.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Liste des participants</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            {% for participant in i.participants %}
+                                                {{ participant.username }}
+                                            {% else%}
+                                                Liste est vide..
+                                            {% endfor%}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <button id="{{ i.id ~ '0' }}" class="btn btn-primary pull-right">
+                                Afficher les commentaires</button>
+                            <button id="{{ i.id ~ '1' }}" class="btn btn-primary pull-right" hidden>
+                                Masquer les commentaires
+                            </button>
+
+                            <div id="{{ i.id ~ '2' }}" hidden>
+                                <form action="{{ path('evenement_com') }}">
+                                    <br>
+                                    {% for k in coms %}
+                                        {% if k.idobjet == i.id %}
+                                            {% for j in users %}
+                                                {% if k.iduser == j.id %}
+
+                                                    <div class="alert bg-primary" role="alert">
+                                                        <svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg><label>{{ j.username ~' : ' }}</label>
+                                                        {{k.valure }} </span></a>
+                                                        {% if k.iduser == app.user.id %}
+                                                            <a href="{{ path('evenement_suppr_com',{'idcom':k.id}) }}" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+
+                                                        {% endif %}
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <table>
+                                        <tr>
+                                            <td width="1200px" class="chat">
+                                                <textarea class="form-control" name="value" required autofocus></textarea>
+                                            </td>
+                                            <td width="20px"></td>
+                                            <td>
+                                                <input type="submit" value="Envoyer" class="btn btn-primary">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <input type="text" name="ideve" hidden value="{{ i.id }}">
+                                    <input type="text" name="iduser" hidden value="{{ app.user.id }}">
+                                    <br>
+                                </form>
+                            </div>
+
+                            <script>
+                                $('#{{ i.id ~ '0' }}').click(
+                                    function () {
+                                        $('#{{ i.id ~ '2' }}').show();
+                                        $('#{{ i.id ~ '0' }}').hide();
+                                        $('#{{ i.id ~ '1' }}').show();
+                                    }
+                                );
+
+                                $('#{{ i.id ~ '1' }}').click(
+                                    function () {
+                                        $('#{{ i.id ~ '2' }}').hide();
+                                        $('#{{ i.id ~ '0' }}').show();
+                                        $('#{{ i.id ~ '1' }}').hide();
+                                    }
+                                );
+
+                            </script>
+
+
+
+
+                        </ol>
+
+                    </div>
+                </div>
+
+            </div>
+
+        {% endfor %}
+    </div>
+
+
+    <script>
+
+        (function(){
+
+            var popupCenter = function(url, title, width, height){
+                var popupWidth = width || 640;
+                var popupHeight = height || 320;
+                var windowLeft = window.screenLeft || window.screenX;
+                var windowTop = window.screenTop || window.screenY;
+                var windowWidth = window.innerWidth || document.documentElement.clientWidth;
+                var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+                var popupLeft = windowLeft + windowWidth / 2 - popupWidth / 2 ;
+                var popupTop = windowTop + windowHeight / 2 - popupHeight / 2;
+                var popup = window.open(url, title, 'scrollbars=yes, width=' + popupWidth + ', height=' + popupHeight + ', top=' + popupTop + ', left=' + popupLeft);
+                popup.focus();
+                return true;
+            };
+
+            document.querySelector('.share_twitter').addEventListener('click', function(e){
+                e.preventDefault();
+                var url = this.getAttribute('data-url');
+                var shareUrl = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(document.title) +
+                    "&url=" + encodeURIComponent(url);
+                popupCenter(shareUrl, "Partager sur Twitter");
+            });
+
+            document.querySelector('.share_facebook').addEventListener('click', function(e){
+                e.preventDefault();
+                var url = this.getAttribute('data-url');
+                var shareUrl = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url);
+                popupCenter(shareUrl, "Partager sur facebook");
+            });
+
+            document.querySelector('.share_gplus').addEventListener('click', function(e){
+                e.preventDefault();
+                var url = this.getAttribute('data-url');
+                var shareUrl = "https://plus.google.com/share?url=" + encodeURIComponent(url);
+                popupCenter(shareUrl, "Partager sur Google+");
+            });
+
+            document.querySelector('.share_linkedin').addEventListener('click', function(e){
+                e.preventDefault();
+                var url = this.getAttribute('data-url');
+                var shareUrl = "https://www.linkedin.com/shareArticle?url=" + encodeURIComponent(url);
+                popupCenter(shareUrl, "Partager sur Linkedin");
+            });
+
+        })();
+
+
+    </script>
 
 {% endblock %}

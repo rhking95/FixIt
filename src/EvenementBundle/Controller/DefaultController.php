@@ -5,20 +5,25 @@ namespace EvenementBundle\Controller;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Commentaire;
 use EvenementBundle\Entity\Evenement;
-use EvenementBundle\Form\EvenementType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Stopwatch\Stopwatch;
+
+use EvenementBundle\Form\EvenementType;
+use EvenementBundle\Form\EvenementEditType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\SearchType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+
 
 class DefaultController extends Controller
 {
     public function addcomAction(Request $request){
-        $valeur = $request->get('valeur');
+        $valeur = $request->get('value');
         $idobject = $request->get('idobject');
         $iduser = $request->get('iduser');
 
         $com = new Commentaire();
-        $com->setValure($valeur);
+        $com->setValeur($valeur);
         $com->setIdobjet($idobject);
         $com->setIduser($iduser);
         $com->setType(4);
@@ -27,12 +32,7 @@ class DefaultController extends Controller
         $em->persist($com);
         $em->flush();
 
-        $evenements = $this->getDoctrine()->getRepository
-        (Evenement::class)->findAll();
-        $users =$this->getDoctrine()->getRepository(User::class)->findAll();
-        $coms = $this->getDoctrine()->getRepository(Commentaire::class)->findAll(array('type'=>4));
-        return $this->render('@Evenement/Default/listeEvenements.html.twig', array('evenement' => $evenements,'users'=>$users,
-            'coms'=>$coms));
+        return $this->redirectToRoute('evenement_liste');
     }
 
     public function supprimercomAction($idcom){
@@ -43,7 +43,7 @@ class DefaultController extends Controller
         $em->remove($com);
         $em->flush();
 
-        return $this->listeAction();
+        return $this->redirectToRoute('evenement_liste');
     }
 
     public function indexAction(Request $req)
@@ -86,38 +86,195 @@ class DefaultController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($evenement);
                 $em->flush();
+
+                return $this->redirectToRoute('evenement_liste');
             }
         $form = $form->createView();
         return $this->render('@Evenement/Default/index.html.twig',array('form'=>$form));
     }
-    public function listeAction(){
-        $eve = $this->getDoctrine()->getRepository
-        (Evenement::class)->findAll();
-        $users =$this->getDoctrine()->getRepository(User::class)->findAll();
-        $coms = $this->getDoctrine()->getRepository(Commentaire::class)->findAll(array('type'=>4));
-        return $this->render('@Evenement/Default/listeEvenements.html.twig', array(
-            'evenement' => $eve,'users'=>$users, 'coms'=>$coms));
-    }
 
-    public function participerAction(Request $request){
-        $id=$request->get('id');
-        $em=$this->getDoctrine()->getManager();
-        $evenement=$em->getRepository(Evenement::class)->count($id);
-        return $this->listeAction();
+    public function listeAction(Request $request){
 
-    }
+        $evenements_en_cours=$this->getDoctrine()->getRepository(Evenement::class)->liste_des_evenements_en_cours();
+        $evenements_passes=$this->getDoctrine()->getRepository(Evenement::class)->liste_des_evenements_passes();
 
-    public function rechercheAction(Request $req){
-        $date = $req->get('startTime');
-        $categorie = $req->get('categorie');
-        $adresse = $req->get('adresse');
+        $formulaire = $this->createFormBuilder()
+            ->add('search', SearchType::class, [
+                'attr' => ['class' => 'form-control','placeholder' => 'Titre,Adresse,Catégorie..'],
+                'label' => false,
+                'required' => false
+            ])
+            ->add('date', DateType::class, [
+                'attr' => ['class' => 'form-control'],
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'label' => false,
+                'required' => false
+            ])
+            ->add('send', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-dark'],
+                'label' => 'Recherche'
+            ])
+            ->getForm();
+        $formulaire->handleRequest($request);
 
-        if (!empty($date) or !empty($categorie) or !empty($adresse)){
-            $eve = $this->getDoctrine()->getRepository
-            (Evenement::class)->rechercheAll($date,$categorie,$adresse);
-            return $this->render('@Evenement/Default/listeEvenements.html.twig',
-                array('evenement'=>$eve));
+        if ($formulaire->isSubmitted() && $formulaire->isValid()) {
+            $search = $formulaire['search']->getData();
+            $date = $formulaire['date']->getData();
+
+            $searchResultParString= [];
+            $searchResultParDate= [];
+            $search_type=null;
+            $search_word=null;
+
+            if(($search != null)&&($date != null)){
+                $EveSearchTitre = $this->getDoctrine()->getRepository(Evenement::class)->findBy(array('titre' => $search));
+                $EveSearchAdresse = $this->getDoctrine()->getRepository(Evenement::class)->findBy(array('adresse' => $search));
+                $EveSearchCategorie = $this->getDoctrine()->getRepository(Evenement::class)->liste_des_evenements_par_categorie([$search]);
+
+                $events= array_merge($EveSearchTitre,$EveSearchAdresse,$EveSearchCategorie);
+
+                foreach ($events as $event)
+                {
+                    $dateEvent=$event->getStartTime();
+
+                    $interval = $date->diff($dateEvent);
+
+                    if(($interval->format('%R%a days')=="-0 days") || ($interval->format('%R%a days')=="+0 days"))
+                    {
+                        array_push($searchResultParDate,$event);
+                    }
+                }
+
+                $search_type='stringDate';
+                $search_word=['string'=>$search,
+                    'date'=>$date];
+
+            }elseif ($search != null){
+                $EveSearchTitre = $this->getDoctrine()->getRepository(Evenement::class)->findBy(array('titre' => $search));
+                $EveSearchAdresse = $this->getDoctrine()->getRepository(Evenement::class)->findBy(array('adresse' => $search));
+                $EveSearchCategorie = $this->getDoctrine()->getRepository(Evenement::class)->liste_des_evenements_par_categorie([$search]);
+
+                $searchResultParString= array_merge($EveSearchTitre,$EveSearchAdresse,$EveSearchCategorie);
+
+                $search_type='string';
+                $search_word=$search;
+
+            }elseif ($date != null){
+
+                $events=$this->getDoctrine()->getRepository(Evenement::class)->findAll();
+                foreach ($events as $event)
+                {
+                    $dateEvent=$event->getStartTime();
+
+                    $interval = $date->diff($dateEvent);
+
+                    if(($interval->format('%R%a days')=="-0 days") || ($interval->format('%R%a days')=="+0 days"))
+                    {
+                        array_push($searchResultParDate,$event);
+                    }
+                }
+
+                $search_type='date';
+                $search_word=$date;
+            }
+
+            $searchResult=array_merge($searchResultParString,$searchResultParDate);
+
+
+            $users =$this->getDoctrine()->getRepository(User::class)->findAll();
+            $coms = $this->getDoctrine()->getRepository(Commentaire::class)->findAll();
+            return $this->render('@Evenement/Default/search_event.html.twig', array(
+                'evenement' => $searchResult,
+                'type' => $search_type,
+                'search' => $search_word,
+                'users'=>$users,
+                'coms'=>$coms
+            ));
         }
-        return $this->render('@Evenement/Default/recherche.html.twig');
+
+
+        $users =$this->getDoctrine()->getRepository(User::class)->findAll();
+        $coms = $this->getDoctrine()->getRepository(Commentaire::class)->findAll();
+
+        return $this->render('@Evenement/Default/listeEvenements.html.twig', array(
+            'evenement' => $evenements_en_cours,
+            'evenementPasses' => $evenements_passes,
+            'formulaire' => $formulaire->createView(),
+            'users'=>$users,
+            'coms'=>$coms
+        ));
     }
+
+    public function editAction(Request $request, Evenement $evenement)
+    {
+//        $deleteForm = $this->createDeleteForm($patient);
+        $editForm = $this->createForm(EvenementEditType::class, $evenement);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('evenement_liste');
+        }
+
+        return $this->render('@Evenement/Default/edit_event.html.twig', array(
+            'evenement' => $evenement,
+            'edit_form' => $editForm->createView()
+        ));
+    }
+
+    public function deleteAction( $id )
+    {
+        $em=$this->getDoctrine()->getManager();
+        $evenement=$em->getRepository(Evenement::class)->find($id);
+        $em->remove($evenement);
+        $em->flush();
+        return $this->redirectToRoute('evenement_liste');
+    }
+
+    public function participerAction(Evenement $evenement){
+
+
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        $evenement->getParticipants()->add($user);
+
+
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        $mailer= $this->container->get('EvenementBundle\Email\Mailer');
+        $mailer->EmailConfirmationPaticiper($user->getEmail(),$user->getUsername(),$evenement->getTitre(),$evenement->getStartTime());
+
+        return $this->redirectToRoute('evenement_liste');
+
+    }
+
+    public function annulerAction(Evenement $evenement){
+
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+
+
+        $evenement->getParticipants()->removeElement($user);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        $mailer= $this->container->get('EvenementBundle\Email\Mailer');
+        $mailer->EmailAnnulerPaticiper($user->getEmail(),$user->getUsername(),$evenement->getTitre());
+
+        return $this->redirectToRoute('evenement_liste');
+
+    }
+
+    private function createDeleteForm(Evenement $evenement)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('evenement_delete', array('id' => $evenement->getId())))
+            ->setMethod('DELETE')
+            ->getForm()
+            ;
+    }
+
+
 }

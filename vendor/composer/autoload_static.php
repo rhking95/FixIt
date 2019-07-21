@@ -55,9 +55,17 @@ class ComposerStaticInit1e6c49d94f657e1ce4ba2c6d7b3aa5be
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
         ),
+        'N' => 
+        array (
+            'Negotiation\\' => 12,
+        ),
         'M' => 
         array (
             'Monolog\\' => 8,
+        ),
+        'J' => 
+        array (
+            'JMS\\SerializerBundle\\' => 21,
         ),
         'I' => 
         array (
@@ -67,6 +75,8 @@ class ComposerStaticInit1e6c49d94f657e1ce4ba2c6d7b3aa5be
         array (
             'Fig\\Link\\' => 9,
             'FOS\\UserBundle\\' => 15,
+            'FOS\\RestBundle\\' => 15,
+            'FOS\\CommentBundle\\' => 18,
         ),
         'D' => 
         array (
@@ -188,9 +198,17 @@ class ComposerStaticInit1e6c49d94f657e1ce4ba2c6d7b3aa5be
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
+        'Negotiation\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation',
+        ),
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'JMS\\SerializerBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jms/serializer-bundle',
         ),
         'Incenteev\\ParameterHandler\\' => 
         array (
@@ -203,6 +221,14 @@ class ComposerStaticInit1e6c49d94f657e1ce4ba2c6d7b3aa5be
         'FOS\\UserBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/friendsofsymfony/user-bundle',
+        ),
+        'FOS\\RestBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/friendsofsymfony/rest-bundle',
+        ),
+        'FOS\\CommentBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/friendsofsymfony/comment-bundle',
         ),
         'Doctrine\\Instantiator\\' => 
         array (
@@ -244,6 +270,39 @@ class ComposerStaticInit1e6c49d94f657e1ce4ba2c6d7b3aa5be
             'Twig_' => 
             array (
                 0 => __DIR__ . '/..' . '/twig/twig/lib',
+            ),
+        ),
+        'P' => 
+        array (
+            'PhpOption\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/phpoption/phpoption/src',
+            ),
+            'PhpCollection' => 
+            array (
+                0 => __DIR__ . '/..' . '/phpcollection/phpcollection/src',
+            ),
+        ),
+        'M' => 
+        array (
+            'Metadata\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/jms/metadata/src',
+            ),
+        ),
+        'J' => 
+        array (
+            'JsonpCallbackValidator' => 
+            array (
+                0 => __DIR__ . '/..' . '/willdurand/jsonp-callback-validator/src',
+            ),
+            'JMS\\Serializer' => 
+            array (
+                0 => __DIR__ . '/..' . '/jms/serializer/src',
+            ),
+            'JMS\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/jms/parser-lib/src',
             ),
         ),
         'D' => 

@@ -138,10 +138,10 @@ class __TwigTemplate_04083b851d93c014d4eeca3bd6f6bd70167e08a84c219ded4f9502f4d20
     </div>
     </div>
 </div>
-<input type=\"text\" value=\"";
+";
         // line 56
-        echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute(($context["app"] ?? $this->getContext($context, "app")), "user", array()), "id", array()), "html", null, true);
-        echo "\" name=\"iduser\" hidden>
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock($this->getAttribute(($context["form"] ?? $this->getContext($context, "form")), "iduser", array()), 'widget', array("attr" => array("value" => $this->getAttribute($this->getAttribute(($context["app"] ?? $this->getContext($context, "app")), "user", array()), "id", array()))));
+        echo "
 ";
         // line 57
         echo         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock(($context["form"] ?? $this->getContext($context, "form")), 'form_end');
@@ -237,7 +237,7 @@ class __TwigTemplate_04083b851d93c014d4eeca3bd6f6bd70167e08a84c219ded4f9502f4d20
     </div>
     </div>
 </div>
-<input type=\"text\" value=\"{{ app.user.id }}\" name=\"iduser\" hidden>
+{{ form_widget(form.iduser,{ 'attr': {'value': app.user.id } }) }}
 {{ form_end(form)}}
 </body>
 

@@ -1,0 +1,203 @@
+{% extends "base.html.twig" %}
+{% block title %}Rechercher{% endblock %}
+{% block content %}
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <ol class="breadcrumb">
+        <li><a>
+                <svg class="glyph stroked eye"><use xlink:href="#stroked-eye"/></svg>
+
+            </a>
+            Résultat de la recherche pour :
+
+            {% if type=='string' %}
+            <b>{{ search }}</b> </li> <a style="margin-left:70%" href="{{ path('evenement_liste') }}">Retour à la liste</a>
+        {% elseif type=='date' %}
+            <b>{{ search|date("d-m-Y") }}</b> </li> <a style="margin-left:60%" href="{{ path('evenement_liste') }}">Retour à la liste</a>
+        {% elseif type=='stringDate' %}
+            <b>{{ search.string}}</b> et <b>{{ search.date|date("d-m-Y") }}</b></li> <a style="margin-left:50%" href="{{ path('evenement_liste') }}">Retour à la liste</a>
+        {% else %}
+            <b>---</b> et <b>---</b></li> <a style="margin-left:55%" href="{{ path('evenement_liste') }}">Retour à la liste</a>
+        {% endif %}
+
+    </ol>
+    <br>
+
+    <div class="panel-body chat">
+        {% for i in evenement %}
+            <div class="col-md-pull-1">
+        <span class="chat-img pull-left">
+            <img src="{{ asset('./img/' ~ i.photo ) }}" class="img-circle" height="150" width="150">
+            <br><strong class="primary-font">Créé par : </strong> {{ i.iduser.username }}
+            <br><strong class="primary-font">Date de création : </strong> {{ i.date|date("d-m-Y H:i") }}
+        </span>
+
+
+                <div class="panel panel-success col-md-offset-3">
+                    <div class="panel-heading">
+                        <h4 style="color: green">
+                            <b>Titre : {{ i.titre }}
+
+                            </b>
+
+                            {% if i.iduser == app.user %}
+                                <a href="">
+                                    <svg class="glyph stroked cancel pull-right"><use xlink:href="#stroked-cancel"/></svg>
+                                </a>
+                                <a href="{{ path('evenement_edit', { 'id': i.id }) }}">
+                                    <svg class="glyph stroked pencil pull-right"><use xlink:href="#stroked-pencil"/>
+                                    </svg>
+                                </a>
+                            {% endif %}
+
+                        </h4>
+                        <h5 style="color: green">Date et heure : {{ i.startTime|date("d-m-Y H:i") }}</h5>
+                    </div>
+                    <div class="panel-body">
+                        <strong class="primary-font">Catégorie d'événement : </strong>{{ i.categorie.nom }}
+                        <br>
+                        <strong class="primary-font">Se termine le : </strong>{{ i.endTime|date("d-m-Y H:i") }}
+                        <br>
+                        <strong class="primary-font">Adresse : </strong>{{ i.adresse }}
+                        <br>
+                        <strong class="primary-font">Description : </strong>{{ i.description }}
+                        <br>
+                    </div>
+
+                    <div class="panel-footer">
+                        <ol class="breadcrumb">
+                            <li><a
+                                        data-toggle="modal" data-target="{{ '#exampleModal' ~ i.id }}"
+
+                                >
+                                    <svg class="glyph stroked male user ">
+                                        <use xlink:href="#stroked-male-user"/>
+                                    </svg>
+                                </a>
+                            </li>
+
+                            <li class="active">Nombre de participants : {{ i.participants|length }}</li>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="{{ 'exampleModal' ~ i.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Liste des participants</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            {% for participant in i.participants %}
+                                                {{ participant.username }}
+                                            {% else%}
+                                                Liste est vide..
+                                            {% endfor%}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% if app.user in i.participants %}
+
+                                <a href="{{ path('evenement_annuler', { 'id': i.id }) }}">
+                                    <button class="btn btn-danger pull-right">Annuler</button>
+                                </a>
+
+                            {% else %}
+
+                                <a href="{{ path('evenement_participer', { 'id': i.id }) }}">
+                                    <button class="btn btn-danger pull-right">Participer</button>
+                                </a>
+
+                            {% endif %}
+
+
+
+                            <button id="{{ i.id ~ '0' }}" class="btn btn-primary pull-right">
+                                Afficher les commentaires</button>
+                            <button id="{{ i.id ~ '1' }}" class="btn btn-primary pull-right" hidden>
+                                Masquer les commentaires
+                            </button>
+
+                            <div id="{{ i.id ~ '2' }}" hidden>
+                                <form action="{{ path('evenement_com') }}">
+                                    <br>
+                                    {% for k in coms %}
+                                        {% if k.ideve == i.id %}
+                                            {% for j in users %}
+                                                {% if k.iduser == j.id %}
+
+                                                    <div class="alert bg-primary" role="alert">
+                                                        <svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg><label>{{ j.username ~' : ' }}</label>
+                                                        {{k.valure }} </span></a>
+                                                        {% if k.iduser == app.user.id %}
+                                                            <a href="{{ path('evenement_suppr_com',{'idcom':k.id}) }}" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+
+                                                        {% endif %}
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <table>
+                                        <tr>
+                                            <td width="1200px" class="chat">
+                                                <textarea class="form-control" name="value" required autofocus></textarea>
+                                            </td>
+                                            <td width="20px"></td>
+                                            <td>
+                                                <input type="submit" value="Envoyer" class="btn btn-primary">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <input type="text" name="ideve" hidden value="{{ i.id }}">
+                                    <input type="text" name="iduser" hidden value="{{ app.user.id }}">
+                                    <br>
+                                </form>
+                            </div>
+
+                            <script>
+                                $('#{{ i.id ~ '0' }}').click(
+                                    function () {
+                                        $('#{{ i.id ~ '2' }}').show();
+                                        $('#{{ i.id ~ '0' }}').hide();
+                                        $('#{{ i.id ~ '1' }}').show();
+                                    }
+                                );
+
+                                $('#{{ i.id ~ '1' }}').click(
+                                    function () {
+                                        $('#{{ i.id ~ '2' }}').hide();
+                                        $('#{{ i.id ~ '0' }}').show();
+                                        $('#{{ i.id ~ '1' }}').hide();
+                                    }
+                                );
+
+                            </script>
+
+                        </ol>
+
+                    </div>
+                </div>
+
+            </div>
+
+        {% else %}
+
+            <div class="panel-footer">
+                aucun évenement trouvé..
+            </div>
+        {% endfor %}
+    </div>
+
+
+
+
+
+
+
+{% endblock %}

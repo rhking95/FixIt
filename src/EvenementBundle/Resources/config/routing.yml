@@ -11,5 +11,16 @@ evenement_suppr_com:
     path:     /supprimercom/{idcom}
     defaults: { _controller: EvenementBundle:Default:supprimercom }
 evenement_participer:
-    path:     /participer
+    path:     /participer{id}
     defaults: { _controller: EvenementBundle:Default:participer }
+evenement_annuler:
+    path:     /annuler/{id}
+    defaults: { _controller: EvenementBundle:Default:annuler }
+
+evenement_edit:
+    path:     /{id}/modifier
+    defaults: { _controller: EvenementBundle:Default:edit }
+
+evenement_delete:
+    path:     /{id}/supprimer
+    defaults: { _controller: EvenementBundle:Default:delete }

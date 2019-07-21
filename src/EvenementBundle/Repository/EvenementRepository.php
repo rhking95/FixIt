@@ -24,4 +24,71 @@ class EvenementRepository extends \Doctrine\ORM\EntityRepository
             ->createQuery("select e from EvenementBundle:Evenement e where e.id='$id'");
         return $query2->getResult();
     }
+
+    //Changement de stratégie
+
+    public function liste_des_evenements_en_cours()
+    {
+        $date=new \DateTime();
+        $d=$date->format('Y-m-d H:i:s');
+        $req = $this->getEntityManager()->createQuery("select v from EvenementBundle:Evenement v 
+              WHERE v.startTime >'$d'")
+            ->getResult();
+        return $req;
+    }
+
+    public function liste_des_evenements_passes()
+    {
+        $date=new \DateTime();
+        $d=$date->format('Y-m-d H:i:s');
+        $req = $this->getEntityManager()->createQuery("select v from EvenementBundle:Evenement v 
+              WHERE v.startTime < '$d'")
+            ->getResult();
+        return $req;
+    }
+
+    public function liste_des_evenements_par_categorie(array $categoryNames)
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        // On fait une jointure avec l'entité Category avec pour alias « c »
+        $qb
+            ->innerJoin('a.categorie', 'c')
+            ->addSelect('c')
+        ;
+
+        // Puis on filtre sur le nom des catégories à l'aide d'un IN
+        $qb->where($qb->expr()->in('c.nom', $categoryNames));
+        // La syntaxe du IN et d'autres expressions se trouve dans la documentation Doctrine
+
+        // Enfin, on retourne le résultat
+        return $qb
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+
+    public function SupprimerEvenement($id)
+    {
+        $this->SupprimerCommentsEvenement($id);
+        $req = $this->getEntityManager()->createQuery("delete from EvenementBundle:Evenement v 
+              WHERE v.id = '$id'")
+            ->execute();
+    }
+
+    public function SupprimerCommentsEvenement($idobjet)
+    {
+        $req = $this->getEntityManager()->createQuery("delete from AppBundle:Commentaire v 
+              WHERE v.type = '4' AND v.idobjet = '$idobjet'")
+            ->execute();
+    }
+
+    public function getAllCommentsEvenement()
+    {
+        $idobjet=4;
+        $req = $this->getEntityManager()->createQuery("select v from AppBundle:Commentaire v 
+              WHERE v.type = 4 ")
+            ->execute();
+    }
 }
