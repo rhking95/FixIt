@@ -10,9 +10,9 @@ namespace EvenementBundle\Repository;
  */
 class EvenementRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function rechercheAll($categorie,$date,$adresse){
+    public function rechercheAll($categorie,$date){
         $req = $this->getEntityManager()->createQuery("select v from EvenementBundle:Evenement v 
-              WHERE v.categorie='$categorie' OR v.startTime='$date' OR v.adresse>='$adresse'")
+              WHERE v.categorie='$categorie' OR v.startTime='$date' ")
             ->getResult();
         return $req;
     }

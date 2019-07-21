@@ -69,7 +69,9 @@
                         <br>
                         <strong class="primary-font">Se termine le : </strong>{{ i.endTime|date("d-m-Y H:i") }}
                         <br>
-                        <strong class="primary-font">Adresse : </strong>{{ i.adresse }}
+                        <strong class="primary-font">Gouvernorat : </strong>{{ i.gouvernorat.Libelle }}
+                        <br>
+                        <strong class="primary-font">Delegation : </strong>{{ i.delegation.Libelle }}
                         <br>
                         <strong class="primary-font">Description : </strong>{{ i.description }}
                         <br>
@@ -274,7 +276,9 @@
                         <br>
                         <strong class="primary-font">Se termine le : </strong>{{ i.endTime|date("d-m-Y H:i") }}
                         <br>
-                        <strong class="primary-font">Adresse : </strong>{{ i.adresse }}
+                        <strong class="primary-font">Gouvernorat : </strong>{{ i.Gouvernorat.Libelle }}
+                        <br>
+                        <strong class="primary-font">Delegation : </strong>{{ i.Delegation.Libelle }}
                         <br>
                         <strong class="primary-font">Description : </strong>{{ i.description }}
                         <br>

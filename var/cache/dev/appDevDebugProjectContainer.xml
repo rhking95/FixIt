@@ -131,8 +131,8 @@
     <parameter key="database_password">null</parameter>
     <parameter key="mailer_transport">gmail</parameter>
     <parameter key="mailer_host">127.0.0.1</parameter>
-    <parameter key="mailer_user">symfonywebpack@gmail.com</parameter>
-    <parameter key="mailer_password">TeamLead123</parameter>
+    <parameter key="mailer_user">radhouane.homrani@esprit.tn</parameter>
+    <parameter key="mailer_password">r26442330</parameter>
     <parameter key="secret">ThisTokenIsNotSoSecretChangeIt</parameter>
     <parameter key="photo">.\img</parameter>
     <parameter key="locale">fr</parameter>
@@ -245,8 +245,8 @@
     <parameter key="swiftmailer.mailer.default.transport.smtp.encryption">ssl</parameter>
     <parameter key="swiftmailer.mailer.default.transport.smtp.port">465</parameter>
     <parameter key="swiftmailer.mailer.default.transport.smtp.host">smtp.gmail.com</parameter>
-    <parameter key="swiftmailer.mailer.default.transport.smtp.username">symfonywebpack@gmail.com</parameter>
-    <parameter key="swiftmailer.mailer.default.transport.smtp.password">TeamLead123</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.username">radhouane.homrani@esprit.tn</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.password">r26442330</parameter>
     <parameter key="swiftmailer.mailer.default.transport.smtp.auth_mode">login</parameter>
     <parameter key="swiftmailer.mailer.default.transport.smtp.timeout">30</parameter>
     <parameter key="swiftmailer.mailer.default.transport.smtp.source_ip">null</parameter>
@@ -4684,10 +4684,10 @@
         <argument type="service" id="3_Swift_Transport_Esmtp_Auth_PlainAuthenticator~exdm4h1"/>
       </argument>
       <call method="setUsername">
-        <argument>symfonywebpack@gmail.com</argument>
+        <argument>radhouane.homrani@esprit.tn</argument>
       </call>
       <call method="setPassword">
-        <argument>TeamLead123</argument>
+        <argument>r26442330</argument>
       </call>
       <call method="setAuthMode">
         <argument>login</argument>

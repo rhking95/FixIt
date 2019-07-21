@@ -41,7 +41,7 @@ class Mailer
 
 
         $message = (new Swift_Message('Confirmation de participation à un évènement.'))
-            ->setFrom('symfonywebpack@gmail.com')
+            ->setFrom('marwa.rhaiem@esprit.tn')
             ->setTo($adrTo)
             ->setBody($body, 'text/html');
         $this->mailer->send($message);

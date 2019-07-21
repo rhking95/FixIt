@@ -57,7 +57,9 @@
                         <br>
                         <strong class="primary-font">Se termine le : </strong>{{ i.endTime|date("d-m-Y H:i") }}
                         <br>
-                        <strong class="primary-font">Adresse : </strong>{{ i.adresse }}
+                        <strong class="primary-font">Gouvernorat : </strong>{{ i.gouvernorat.Libelle }}
+                        <br>
+                        <strong class="primary-font">Delegation : </strong>{{ i.delegation.Libelle }}
                         <br>
                         <strong class="primary-font">Description : </strong>{{ i.description }}
                         <br>
@@ -127,15 +129,15 @@
                                 <form action="{{ path('evenement_com') }}">
                                     <br>
                                     {% for k in coms %}
-                                        {% if k.ideve == i.id %}
+                                        {% if k.idobjet == i.id %}
                                             {% for j in users %}
                                                 {% if k.iduser == j.id %}
 
                                                     <div class="alert bg-primary" role="alert">
                                                         <svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg><label>{{ j.username ~' : ' }}</label>
-                                                        {{k.valure }} </span></a>
+                                                        {{k.valeur }} </span></a>
                                                         {% if k.iduser == app.user.id %}
-                                                            <a href="{{ path('evenement_suppr_com',{'idcom':k.id}) }}" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                                                            <a href="{{ path('evenement_suppr_com',{'idcom':k.idobjet}) }}" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
 
                                                         {% endif %}
                                                     </div>

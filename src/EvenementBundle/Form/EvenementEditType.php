@@ -3,6 +3,7 @@
 
 namespace EvenementBundle\Form;
 
+use AppBundle\Repository\AdresseRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -36,7 +37,25 @@ class EvenementEditType extends AbstractType
                 'label' => false
             ])
             ->add('description',TextareaType::class)
-            ->add('adresse');
+            ->add('gouvernorat',EntityType::class,
+                array(
+                    'class' => 'AppBundle\Entity\Adresse',
+                    'query_builder' => function (AdresseRepository $er) {
+                        return $er->createQueryBuilder('a')
+                            ->andWhere('a.IdParent is null');
+                    },
+                    'choice_label' => 'Libelle',
+                ))
+            ->add('delegation',EntityType::class,
+                array(
+                    'class' => 'AppBundle\Entity\Adresse',
+                    'query_builder' => function (AdresseRepository $er) {
+                        return $er->createQueryBuilder('a')
+                            ->andWhere('a.IdParent is not null');
+                    },
+                    'choice_label' => 'Libelle',
+                ))
+        ;
     }/**
  * {@inheritdoc}
  */

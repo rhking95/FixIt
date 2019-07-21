@@ -86,11 +86,16 @@ class Evenement
     private $description;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="adresse", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Adresse")
+     * @ORM\JoinColumn(name="Gouvernorat",referencedColumnName="idAdresse")
      */
-    private $adresse;
+    private $Gouvernorat;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Adresse")
+     * @ORM\JoinColumn(name="Delegation",referencedColumnName="idAdresse")
+     */
+    private $Delegation;
 
     /**
      * @var string
@@ -276,30 +281,6 @@ class Evenement
     }
 
     /**
-     * Set adresse
-     *
-     * @param string $adresse
-     *
-     * @return Evenement
-     */
-    public function setAdresse($adresse)
-    {
-        $this->adresse = $adresse;
-
-        return $this;
-    }
-
-    /**
-     * Get adresse
-     *
-     * @return string
-     */
-    public function getAdresse()
-    {
-        return $this->adresse;
-    }
-
-    /**
      * @return mixed
      */
     public function getIduser()
@@ -372,6 +353,38 @@ class Evenement
     public function removeParticipant(\AppBundle\Entity\User $participant)
     {
         $this->participants->removeElement($participant);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGouvernorat()
+    {
+        return $this->Gouvernorat;
+    }
+
+    /**
+     * @param mixed $Gouvernorat
+     */
+    public function setGouvernorat($Gouvernorat)
+    {
+        $this->Gouvernorat = $Gouvernorat;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDelegation()
+    {
+        return $this->Delegation;
+    }
+
+    /**
+     * @param mixed $Delegation
+     */
+    public function setDelegation($Delegation)
+    {
+        $this->Delegation = $Delegation;
     }
 
 

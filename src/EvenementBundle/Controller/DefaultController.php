@@ -100,7 +100,7 @@ class DefaultController extends Controller
 
         $formulaire = $this->createFormBuilder()
             ->add('search', SearchType::class, [
-                'attr' => ['class' => 'form-control','placeholder' => 'Titre,Adresse,Catégorie..'],
+                'attr' => ['class' => 'form-control','placeholder' => 'Titre,Catégorie..'],
                 'label' => false,
                 'required' => false
             ])
@@ -129,10 +129,9 @@ class DefaultController extends Controller
 
             if(($search != null)&&($date != null)){
                 $EveSearchTitre = $this->getDoctrine()->getRepository(Evenement::class)->findBy(array('titre' => $search));
-                $EveSearchAdresse = $this->getDoctrine()->getRepository(Evenement::class)->findBy(array('adresse' => $search));
                 $EveSearchCategorie = $this->getDoctrine()->getRepository(Evenement::class)->liste_des_evenements_par_categorie([$search]);
 
-                $events= array_merge($EveSearchTitre,$EveSearchAdresse,$EveSearchCategorie);
+                $events= array_merge($EveSearchTitre,$EveSearchCategorie);
 
                 foreach ($events as $event)
                 {
@@ -152,10 +151,9 @@ class DefaultController extends Controller
 
             }elseif ($search != null){
                 $EveSearchTitre = $this->getDoctrine()->getRepository(Evenement::class)->findBy(array('titre' => $search));
-                $EveSearchAdresse = $this->getDoctrine()->getRepository(Evenement::class)->findBy(array('adresse' => $search));
                 $EveSearchCategorie = $this->getDoctrine()->getRepository(Evenement::class)->liste_des_evenements_par_categorie([$search]);
 
-                $searchResultParString= array_merge($EveSearchTitre,$EveSearchAdresse,$EveSearchCategorie);
+                $searchResultParString= array_merge($EveSearchTitre,$EveSearchCategorie);
 
                 $search_type='string';
                 $search_word=$search;
