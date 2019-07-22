@@ -1,0 +1,77 @@
+{% extends "base.html.twig" %}
+{% block content %}
+    {{ form_start(form)}}
+
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <p>Les informations sur le service</p>
+        </div>
+        <div class="panel-body">
+            <table border="0">
+                <tr>
+                    <td rowspan="9" width="20px"></td>
+                </tr>
+                <tr>
+                    <td width="200px" height="50px">
+                        <label>Titre Service</label>
+                    </td>
+                    <td>
+                        {{ form_widget(form.TitreService,{ 'attr': {'class': 'form-control','disabled':'true'} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td width="200px"  height="50px">
+                        <label>Description Service</label>
+                    </td>
+                    <td>
+                        {{ form_widget(form.DescriptionService,{ 'attr': {'class': 'form-control','disabled':'true'} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td width="200px"  height="50px">
+                        <label>Catégorie Service</label>
+                    </td>
+                    <td>
+                        {{ form_widget(form.CategorieService,{ 'attr': {'class': 'form-control','disabled':'true'} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td width="200px"  height="50px">
+                        <label>Prix Service</label>
+                    </td>
+                    <td>
+                        {{ form_widget(form.PrixService,{ 'attr': {'class': 'form-control','disabled':'true'} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td width="200px"  height="50px">
+                        <label>	Date de Creation du Service</label>
+                    </td>
+                    <td>
+                        {{ form_widget(form.DateCreationService,{ 'attr': {'class': 'form-control','disabled':'true'} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td width="200px"  height="50px">
+                        <label>Gouvernorat du Service</label>
+                    </td>
+                    <td>
+                        {{ form_widget(form.GouvernoratService,{ 'attr': {'class': 'form-control','disabled':'true'} } ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td width="200px"  height="50px">
+                        <label>Delegation du Service</label>
+                    </td>
+                    <td>
+                        {{ form_widget(form.DelegationService,{ 'attr': {'class': 'form-control','disabled':'true'} } ) }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

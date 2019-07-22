@@ -17,10 +17,44 @@ service_ajoutpage_confirmer:
     methods: [post]
 
 service_listservicepage:
-    path:     /liste
+    path:     /liste/{iduser}
     defaults: { _controller: ServiceBundle:Service:Liste }
 
 service_listservicepage_filtres:
     path:     /recherche
     defaults: { _controller: ServiceBundle:Service:RechercheFiltre }
     methods: [post]
+
+service_modifierpage:
+    path:     /modifier/{idservice}
+    defaults: { _controller: ServiceBundle:Service:Modifier }
+
+service_desactiverpage:
+    path:     /liste/{idservice}/{Type}
+    defaults: { _controller: ServiceBundle:Service:Desactiver }
+
+tousservice_page:
+    path:     /tousservices
+    defaults: { _controller: ServiceBundle:Service:TousService }
+
+service_listservicetouspage_filtres:
+    path:     /recherchetous
+    defaults: { _controller: ServiceBundle:Service:RechercheFiltreTous }
+    methods: [post]
+
+service_afficherpage:
+    path:     /afficher/{idservice}
+    defaults: { _controller: ServiceBundle:Service:Afficher }
+
+service_approuverpage:
+    path:     /approuver
+    defaults: { _controller: ServiceBundle:Service:Approuver }
+
+service_listserviceapprouverpage_filtres:
+    path:     /rechercheapprouver
+    defaults: { _controller: ServiceBundle:Service:RechercheFiltreApprouver }
+    methods: [post]
+
+service_approuvepage:
+    path:     /rechercheapprouver/{idservice}/{type}
+    defaults: { _controller: ServiceBundle:Service:Approuve }

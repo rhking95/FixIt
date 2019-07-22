@@ -35,49 +35,28 @@ jQuery(function($) {
         $("#tousservices").toggle(false);
         $("#filtretitre").toggle(false);
         $("#filtregroupe").toggle(false);
-    })
-    $('#appliquerservice').click(function () {
-        $('#tableservice > tbody').empty();
+        $('#tableservice0 > tbody').empty();
+        $('#tableservice1 > tbody').empty();
+        $('#tableservice2 > tbody').empty();
         $.ajax({
             url: "/Fixit/web/app_dev.php/service/recherche",
             type: "POST",
             dataType: "json",
             data: {
-                "titreservice" : $("#titreservice").val(),
-                "categorieservice" : $("#categorieservice option:selected").val(),
-                "etatservice" : $("#etatservice option:selected").val(),
-                "gouvernoratservice" :$("#gouvernoratservice option:selected").val(),
-                "delegationservice" : $("#delegationservice option:selected").val()
+                "idutilisateur" : $("#idutilisateur").val(),
+                "titreservice" : '',
+                "categorieservice" : -1,
+                "gouvernoratservice" : -1,
+                "delegationservice" : -1
             },
             async: true,
             success: function (data) {
-                var obj = data.service;
-                for (i in obj) {
-                    if (obj.hasOwnProperty(i)) {
-                        var etat="";
-                        if (obj[i].EtatService==0)
-                            etat="En attente d'approbation";
-                        else if(obj[i].EtatService==1)
-                            etat="Actif";
-                        else
-                            etat="Inactif";
-                        $('#tableservice > tbody').append(
-                            "<tr>"+
-                            "<td align='center'>"+obj[i].TitreService+"</td>"+
-                            "<td align='center'>"+obj[i].DescriptionService+"</td>"+
-                            "<td align='center'>"+obj[i].CategorieService+"</td>"+
-                            "<td align='center'>"+obj[i].PrixService+"</td>"+
-                            "<td align='center'>"+new Date(obj[i].DateCreationService.date).getDate()+"/"+
-                            +(new Date(obj[i].DateCreationService.date).getMonth()+1)
-                            +"/"+new Date(obj[i].DateCreationService.date).getFullYear()+"</td>"+
-                            "<td align='center'>"+etat+"</td>"+
-                            "<td align='center'>"+obj[i].NoteService+"</td>"+
-                            "<td align='center'>"+obj[i].GouvernoratService + " : "+ obj[i].DelegationService+"</td>"+
-                            "</tr>"
-                        );
-                    }
-                }
-
+                var obj0 = data.service0;
+                var obj1 = data.service1;
+                var obj2 = data.service2;
+                RemplirTableaux($('#tableservice0 > tbody'),obj0);
+                RemplirTableaux($('#tableservice1 > tbody'),obj1);
+                RemplirTableaux($('#tableservice2 > tbody'),obj2);
             }
         });
         $("#titreservice").text('');
@@ -86,15 +65,62 @@ jQuery(function($) {
         $("#gouvernoratservice option:selected").val(-1);
         $("#delegationservice option:selected").val(-1);
     })
+    $('#appliquerservice').click(function () {
+        $('#tableservice0 > tbody').empty();
+        $('#tableservice1 > tbody').empty();
+        $('#tableservice2 > tbody').empty();
+        $.ajax({
+            url: "/Fixit/web/app_dev.php/service/recherche",
+            type: "POST",
+            dataType: "json",
+            data: {
+                "idutilisateur" : $("#idutilisateur").val(),
+                "titreservice" : $("#titreservice").val(),
+                "categorieservice" : $("#categorieservice option:selected").val(),
+                "gouvernoratservice" :$("#gouvernoratservice option:selected").val(),
+                "delegationservice" : $("#delegationservice option:selected").val()
+            },
+            async: true,
+            success: function (data) {
+                var obj0 = data.service0;
+                var obj1 = data.service1;
+                var obj2 = data.service2;
+                RemplirTableaux($('#tableservice0 > tbody'),obj0);
+                RemplirTableaux($('#tableservice1 > tbody'),obj1);
+                RemplirTableaux($('#tableservice2 > tbody'),obj2);
+            }
+        });
+        $("#titreservice").text('');
+        $("#categorieservice option:selected").val(-1);
+        $("#etatservice option:selected").val(-1);
+        $("#gouvernoratservice option:selected").val(-1);
+        $("#delegationservice option:selected").val(-1);
     })
+
+    })
+
+        function RemplirTableaux(tab,obj) {
+            for (i in obj) {
+                if (obj.hasOwnProperty(i)) {
+                    tab.append(
+                        "<tr>" +
+                        "<td align='center'>" + obj[i].TitreService + "</td>" +
+                        "<td align='center'>" + obj[i].CategorieService + "</td>" +
+                        "<td align='center'>" + obj[i].PrixService + "</td>" +
+                        "<td align='center'>" + new Date(obj[i].DateCreationService.date).getDate() + "/" +
+                        +(new Date(obj[i].DateCreationService.date).getMonth() + 1)
+                        + "/" + new Date(obj[i].DateCreationService.date).getFullYear() + "</td>" +
+                        "<td align='center'>" + obj[i].GouvernoratService + " : " + obj[i].DelegationService + "</td>"+
+                        "</tr>"
+                    );
+                }
+            }
+        }
     </script>
 </head>
 <body>
     <div class="col-sm-3 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">Liste des Services</div>
-                <div class="panel-body">
+            <input type="text" value="{{ app.user.id }}" id="idutilisateur"  disabled hidden>
                     <div class="col-lg-12">
                         <button type="button" class="btn btn-primary" id="filtreservice">Filtrer</button>
                         <button type="button" class="btn btn-primary" id="tousservices" hidden>Afficher tous les services</button>
@@ -118,17 +144,6 @@ jQuery(function($) {
                                         {% for c in categorie %}
                                             <option value="{{ c.id }}">{{ c.nom }}</option>
                                         {% endfor %}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Etat du service :</label>
-                                    <select class="form-control" id="etatservice">
-                                        <option value="-1"  disabled data-align="center" selected>Veuillez choisisr l'état du service</option>
-                                        <option value="0">En attente d'approbation</option>
-                                        <option value="1">Actif</option>
-                                        <option value="2">Inactif</option>
                                     </select>
                                 </div>
                             </div>
@@ -160,41 +175,32 @@ jQuery(function($) {
                             </div>
                         </div>
                         </div>
-                    <div class="col-lg-12">
-                        <br>
-                    </div>
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Liste des Services Actifs</div>
+                <div class="panel-body">
                     <div class="col-lg-12">
                     <form role="form">
-                        <table class="table table-bordered" id="tableservice" >
+                        <table class="table " id="tableservice1" >
                             <thead>
                                 <th><div class="th-inner" align="center">Titre</div></th>
-                                <th><div class="th-inner" align="center">Description</div></th>
                                 <th><div class="th-inner" align="center">Catégorie</div></th>
                                 <th><div class="th-inner" align="center">Prix</div></th>
-                                <th><div class="th-inner" align="center">Date de création</div></th>
-                                <th><div class="th-inner" align="center">Statut</div></th>
-                                <th><div class="th-inner" align="center">Note Attribué</div></th>
+                                <th><div class="th-inner" align="center">Date d'ajout</div></th>
                                 <th><div class="th-inner" align="center">Adresse</div></th>
+                                <th><div class="th-inner" align="center"></div></th>
+                                <th><div class="th-inner" align="center"></div></th>
                             </thead>
                             <tbody>
-                            {% for s in service %}
+                            {% for s0 in service0 %}
                                 <tr>
-                                    <td align='center'>{{ s.TitreService }}</td>
-                                    <td align='center'>{{ s.DescriptionService }}</td>
-                                    <td align='center'>{{ s.CategorieService.nom }}</td>
-                                    <td align='center'>{{ s.PrixService }}</td>
-                                    <td align='center'>{{ s.DateCreationService |date('d/m/Y') }}</td>
-                                    <td align='center'>
-                                        {% if(s.EtatService==0) %}
-                                            En attente d'approbation
-                                        {% elseif(s.EtatService==1)  %}
-                                            Actif
-                                            {% else %}
-                                                Inactif
-                                                {% endif %}
-                                    </td>
-                                    <td align='center'>{{ s.NoteService }}</td>
-                                    <td align='center'>{{ s.GouvernoratService.libelle ~ " : " ~ s.DelegationService.libelle }}</td>
+                                    <td align='center'>{{ s0.TitreService }}</td>
+                                    <td align='center'>{{ s0.CategorieService.nom }}</td>
+                                    <td align='center'>{{ s0.PrixService }}</td>
+                                    <td align='center'>{{ s0.DateCreationService |date('d/m/Y') }}</td>
+                                    <td align='center'>{{ s0.GouvernoratService.libelle ~ " : " ~ s0.DelegationService.libelle }}</td>
+                                    <td align='center'><a class="btn btn-primary btn-md"href="{{ path("service_modifierpage",{'idservice':s0.IDService}) }}">Modifier</a></td>
+                                    <td align='center'><a class="btn btn-primary btn-md" href="{{ path("service_desactiverpage",{'idservice':s0.IDService,'Type' : 1}) }}">Désactiver</a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -203,6 +209,75 @@ jQuery(function($) {
                     </div>
                 </div>
             </div>
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Liste des Services en attente d'approbation</div>
+                    <div class="panel-body">
+                        <div class="col-lg-12">
+                            <form role="form">
+                                <table class="table " id="tableservice0" >
+                                    <thead>
+                                    <th><div class="th-inner" align="center">Titre</div></th>
+                                    <th><div class="th-inner" align="center">Catégorie</div></th>
+                                    <th><div class="th-inner" align="center">Prix</div></th>
+                                    <th><div class="th-inner" align="center">Date d'ajout</div></th>
+                                    <th><div class="th-inner" align="center">Adresse</div></th>
+                                    <th><div class="th-inner" align="center"></div></th>
+                                    <th><div class="th-inner" align="center"></div></th>
+                                    </thead>
+                                    <tbody>
+                                    {% for s1 in service1 %}
+                                        <tr>
+                                            <td align='center'>{{ s1.TitreService }}</td>
+                                            <td align='center'>{{ s1.CategorieService.nom }}</td>
+                                            <td align='center'>{{ s1.PrixService }}</td>
+                                            <td align='center'>{{ s1.DateCreationService |date('d/m/Y') }}</td>
+                                            <td align='center'>{{ s1.GouvernoratService.libelle ~ " : " ~ s1.DelegationService.libelle }}</td>
+                                            <td align='center'><a class="btn btn-primary btn-md" href="{{ path("service_modifierpage",{'idservice':s1.IDService}) }}">Modifier</a></td>
+                                            <td align='center'><a class="btn btn-primary btn-md" href="{{ path("service_desactiverpage",{'idservice':s1.IDService,'Type' : 1}) }}">Désactiver</a></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <div class="panel panel-default">
+            <div class="panel-heading">Liste des Services Inactif
+            </div>
+            <div class="panel-body">
+                <div class="col-lg-12">
+                    <form role="form">
+                        <table class="table " id="tableservice2" >
+                            <thead>
+                            <th><div class="th-inner" align="center">Titre</div></th>
+                            <th><div class="th-inner" align="center">Catégorie</div></th>
+                            <th><div class="th-inner" align="center">Prix</div></th>
+                            <th><div class="th-inner" align="center">Date d'ajout</div></th>
+                            <th><div class="th-inner" align="center">Adresse</div></th>
+                            <th><div class="th-inner" align="center"></div></th>
+                            <th><div class="th-inner" align="center"></div></th>
+                            </thead>
+                            <tbody>
+                            {% for s2 in service2 %}
+                                <tr>
+                                    <td align='center'>{{ s2.TitreService }}</td>
+                                    <td align='center'>{{ s2.CategorieService.nom }}</td>
+                                    <td align='center'>{{ s2.PrixService }}</td>
+                                    <td align='center'>{{ s2.DateCreationService |date('d/m/Y') }}</td>
+                                    <td align='center'>{{ s2.GouvernoratService.libelle ~ " : " ~ s2.DelegationService.libelle }}</td>
+                                    <td align='center'><a class="btn btn-primary btn-md"href="{{ path("service_modifierpage",{'idservice':s2.IDService}) }}">Modifier</a></td>
+                                    <td align='center'><a class="btn btn-primary btn-md" href="{{ path("service_desactiverpage",{'idservice':s2.IDService,'Type' : 2 }) }}">Activer</a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
         </div>
     </div>
 </body>

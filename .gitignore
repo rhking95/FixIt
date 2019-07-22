@@ -21,3 +21,10 @@
 /.idea/vcs.xml
 /.idea/workspace.xml
 /var/*
+var/cache/dev/appDevDebugProjectContainer.php
+var/cache/dev/appDevDebugProjectContainer.php.meta
+var/cache/dev/appDevDebugProjectContainer.xml
+var/cache/dev/appDevDebugProjectContainer.xml.meta
+var/cache/dev/appDevDebugProjectContainerCompiler.log
+var/cache/dev/appDevDebugProjectContainerUrlGenerator.php
+var/cache/dev/appDevDebugProjectContainerUrlMatcher.php

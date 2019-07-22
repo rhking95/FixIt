@@ -10,7 +10,7 @@ namespace ServiceBundle\Repository;
  */
 class ServiceRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function FiltreService($titre,$categorie,$gouvernorat,$delegation,$etat)
+    public function FiltreService($titre,$categorie,$gouvernorat,$delegation,$etat,$utilisateur)
     {
         $req1="";
         $req2="";
@@ -26,26 +26,17 @@ class ServiceRepository extends \Doctrine\ORM\EntityRepository
             $req3=" and a1.idAdresse =".$gouvernorat;
         if ($delegation!=-1)
             $req4=" and a2.idAdresse =".$delegation;
-        if ($etat!=-1)
-            $req5=" and s.EtatService = ".$etat;
+        if ($utilisateur!=0)
+            $req5=" and u.id =".$utilisateur;
 
         $req6 = "select s.TitreService,s.DescriptionService,d.nom CategorieService,s.PrixService,s.DateCreationService
-                    ,s.EtatService,s.NoteService, a1.Libelle GouvernoratService, a2.Libelle  DelegationService
-                    from ServiceBundle:Service s, AppBundle:Categorie d, AppBundle:Adresse a1, AppBundle:Adresse a2
-                    where d.id=s.CategorieService and a1.idAdresse = s.GouvernoratService and a2.idAdresse=s.DelegationService"
-                    .$req1." ".$req2." ".$req3." ".$req4." ".$req5;
+                    ,s.NoteService, a1.Libelle GouvernoratService, a2.Libelle  DelegationService
+                    from ServiceBundle:Service s, AppBundle:Categorie d, AppBundle:Adresse a1, AppBundle:Adresse a2,AppBundle:User u
+                    where d.id=s.CategorieService and a1.idAdresse = s.GouvernoratService and a2.idAdresse=s.DelegationService and 
+                    u.id = s.UtilisateurService and s.EtatService = ".$etat
+                    ." ".$req1." ".$req2." ".$req3." ".$req4." ".$req5;
 
         return $this->getEntityManager()->createQuery($req6)->getArrayResult();
     }
 
-    public function FiltreServiceAll()
-    {
-        return $this->getEntityManager()->createQuery(
-            "select s.TitreService,s.DescriptionService,d.nom CategorieService,s.PrixService,s.DateCreationService
-                    ,s.EtatService,s.NoteService, a1.Libelle GouvernoratService, a2.Libelle  DelegationService
-                    from ServiceBundle:Service s, AppBundle:Categorie d, AppBundle:Adresse a1, AppBundle:Adresse a2
-                    where d.id=s.CategorieService and a1.idAdresse = s.GouvernoratService and a2.idAdresse=s.DelegationService"
-        )
-            ->getArrayResult();
-    }
 }

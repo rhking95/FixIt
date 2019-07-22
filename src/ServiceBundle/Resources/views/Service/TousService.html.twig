@@ -1,0 +1,200 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <html>
+    <head>
+        <script>
+            jQuery(function($) {
+                $('#gouvernoratservice').blur(function () {
+                    $('#delegationservice').empty();
+                    $.ajax({
+                        url: "/Fixit/web/app_dev.php/service/delegation",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            "gouvernorat": $("#gouvernoratservice option:selected").val()
+                        },
+                        async: true,
+                        success: function (data) {
+                            var obj = data.delegation;
+                            for (i in obj) {
+                                if (obj.hasOwnProperty(i)) {
+                                    $('#delegationservice').append("<option value='" + obj[i].idAdresse + "'>" + obj[i].Libelle + "</option>");
+                                }
+                            }
+                        }
+                    })
+                });
+                $('#filtreservice').click(function () {
+                    $("#filtreservice").toggle(false);
+                    $("#tousservices").toggle(true);
+                    $("#filtretitre").toggle(true);
+                    $("#filtregroupe").toggle(true);
+                })
+                $('#tousservices').click(function () {
+                    $("#filtreservice").toggle(true);
+                    $("#tousservices").toggle(false);
+                    $("#filtretitre").toggle(false);
+                    $("#filtregroupe").toggle(false);
+                    $('#tableservice > tbody').empty();
+                    $.ajax({
+                        url: "/Fixit/web/app_dev.php/service/recherchetous",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            "idutilisateur" : $("#idutilisateur").val(),
+                            "titreservice" : '',
+                            "categorieservice" : -1,
+                            "gouvernoratservice" : -1,
+                            "delegationservice" : -1
+                        },
+                        async: true,
+                        success: function (data) {
+                            var obj = data.service;
+                            RemplirTableaux($('#tableservice > tbody'),obj);
+                        }
+                    });
+                    $("#titreservice").text('');
+                    $("#categorieservice option:selected").val(-1);
+                    $("#etatservice option:selected").val(-1);
+                    $("#gouvernoratservice option:selected").val(-1);
+                    $("#delegationservice option:selected").val(-1);
+                })
+                $('#appliquerservice').click(function () {
+                    $('#tableservice > tbody').empty();
+                    $.ajax({
+                        url: "/Fixit/web/app_dev.php/service/recherchetous",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            "titreservice" : $("#titreservice").val(),
+                            "categorieservice" : $("#categorieservice option:selected").val(),
+                            "gouvernoratservice" :$("#gouvernoratservice option:selected").val(),
+                            "delegationservice" : $("#delegationservice option:selected").val()
+                        },
+                        async: true,
+                        success: function (data) {
+                            var obj = data.service;
+                            RemplirTableaux($('#tableservice > tbody'),obj);
+                        }
+                    });
+                    $("#titreservice").text('');
+                    $("#categorieservice option:selected").val(-1);
+                    $("#etatservice option:selected").val(-1);
+                    $("#gouvernoratservice option:selected").val(-1);
+                    $("#delegationservice option:selected").val(-1);
+                })
+
+            })
+
+            function RemplirTableaux(tab,obj) {
+                for (i in obj) {
+                    if (obj.hasOwnProperty(i)) {
+                        tab.append(
+                            "<tr>" +
+                            "<td align='center'>" + obj[i].TitreService + "</td>" +
+                            "<td align='center'>" + obj[i].CategorieService + "</td>" +
+                            "<td align='center'>" + obj[i].PrixService + "</td>" +
+                            "<td align='center'>" + new Date(obj[i].DateCreationService.date).getDate() + "/" +
+                            +(new Date(obj[i].DateCreationService.date).getMonth() + 1)
+                            + "/" + new Date(obj[i].DateCreationService.date).getFullYear() + "</td>" +
+                            "<td align='center'>" + obj[i].GouvernoratService + " : " + obj[i].DelegationService + "</td>"+
+                            "</tr>"
+                        );
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body>
+    <div class="col-sm-3 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="col-lg-12">
+            <button type="button" class="btn btn-primary" id="filtreservice">Filtrer</button>
+            <button type="button" class="btn btn-primary" id="tousservices" hidden>Afficher tous les services</button>
+        </div>
+        <div class="col-lg-12" id="filtretitre" hidden>
+            <h4><b>Filtres de recherches :</b></h4>
+        </div>
+        <div class="col-lg-12" id="filtregroupe" hidden>
+            <div class="col-lg-12">
+                <div class="col-lg-4">
+                    <div class="form-group" >
+                        <label>Titre du Service :</label>
+                        <input class="form-control" placeholder="Le titre du service" id="titreservice">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Catégorie du service :</label>
+                        <select class="form-control" id="categorieservice">
+                            <option value="-1"  disabled data-align="center" selected>Veuillez choisisr la catégorie du service</option>
+                            {% for c in categorie %}
+                                <option value="{{ c.id }}">{{ c.nom }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Gouvernorat :</label>
+                        <select class="form-control" id="gouvernoratservice">
+                            <option value="-1"  disabled data-align="center" selected>Veuillez choisisr le gouvernorat</option>
+                            {% for g in gouvernorat %}
+                                <option value="{{ g.idAdresse }}">{{ g.Libelle }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Délegation :</label>
+                        <select class="form-control" id="delegationservice">
+                            <option value="-1"  disabled data-align="center" selected>Veuillez choisisr la délegation</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="col-lg-12">
+                        <button type="button" class="btn btn-primary" id="appliquerservice">Appliquer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Liste des Services</div>
+                <div class="panel-body">
+                    <div class="col-lg-12">
+                        <form role="form">
+                            <table class="table " id="tableservice" >
+                                <thead>
+                                <th><div class="th-inner" align="center">Titre</div></th>
+                                <th><div class="th-inner" align="center">Catégorie</div></th>
+                                <th><div class="th-inner" align="center">Prix</div></th>
+                                <th><div class="th-inner" align="center">Date d'ajout</div></th>
+                                <th><div class="th-inner" align="center">Adresse</div></th>
+                                <th><div class="th-inner" align="center"></div></th>
+                                </thead>
+                                <tbody>
+                                {% for s in service %}
+                                    <tr>
+                                        <td align='center'>{{ s.TitreService }}</td>
+                                        <td align='center'>{{ s.CategorieService.nom }}</td>
+                                        <td align='center'>{{ s.PrixService }}</td>
+                                        <td align='center'>{{ s.DateCreationService |date('d/m/Y') }}</td>
+                                        <td align='center'>{{ s.GouvernoratService.libelle ~ " : " ~ s.DelegationService.libelle }}</td>
+                                        <td align='center'><a class="btn btn-primary btn-md"href="{{ path("service_afficherpage",{'idservice':s.IDService}) }}">Afficher</a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+    </html>
+{% endblock %}
