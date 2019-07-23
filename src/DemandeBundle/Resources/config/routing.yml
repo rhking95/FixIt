@@ -54,6 +54,14 @@ detailedem:
     path:     /detaildem/{iddem}
     defaults: { _controller: DemandeBundle:Default:detaildem }
 
+Stat_Dem:
+    path:     /statdem
+    defaults: { _controller: DemandeBundle:Default:state }
+
+PDF:
+    path:     /pdf
+    defaults: { _controller: DemandeBundle:Default:pdf }
+
 listedemande_mobile:
     path:     /lstdemmobile
     defaults: { _controller: DemandeBundle:MobileDemande:lstdemmobile }
@@ -61,3 +69,4 @@ listedemande_mobile:
 repense_mobile:
     path:     /repensemobile/{rep}/{iduser}/{iddem}
     defaults: { _controller: DemandeBundle:MobileDemande:Ajouterrepmobile }
+

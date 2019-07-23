@@ -10,4 +10,40 @@ namespace DemandeBundle\Repository;
  */
 class DemandeRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function countdem(){
+        return $this->getEntityManager()->createQuery(
+            "SELECT COUNT(d) nbdem, IDENTITY(d.cat) iddem FROM DemandeBundle:Demande d group by d.cat"
+        )->getArrayResult();
+    }
+
+    public function countdem0(){
+        return $this->getEntityManager()->createQuery(
+            "SELECT COUNT(d) nbdem  FROM DemandeBundle:Demande d  where d.etat = 0 "
+        )->getResult();
+    }
+
+    public function countdem1(){
+        return $this->getEntityManager()->createQuery(
+            "SELECT COUNT(d) nbdem  FROM DemandeBundle:Demande d  where d.etat = 1 "
+        )->getResult();
+    }
+    public function countdem2(){
+        return $this->getEntityManager()->createQuery(
+            "SELECT COUNT(d) nbdem  FROM DemandeBundle:Demande d  where d.etat = 2 "
+        )->getResult();
+    }
+
+    public function countdemcom(){
+        return $this->getEntityManager()->createQuery(
+            "SELECT COUNT(DISTINCT(c.idobjet)) nbdemcom FROM AppBundle:Commentaire c  where c.type = 1 "
+        )->getResult();
+    }
+
+    public function countdemuser(){
+        return $this->getEntityManager()->createQuery(
+            "SELECT COUNT(DISTINCT(d.iduser)) nbdemuser FROM DemandeBundle:Demande d "
+        )->getResult();
+    }
+
+
 }

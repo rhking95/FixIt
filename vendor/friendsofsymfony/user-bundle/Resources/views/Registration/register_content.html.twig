@@ -1,8 +1,43 @@
+{% extends 'baselogin.html.twig'%}
+
+{% block content %}
 {% trans_default_domain 'FOSUserBundle' %}
 
 {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
-    {{ form_widget(form) }}
-    <div>
-        <input type="submit" value="{{ 'registration.submit'|trans }}" />
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <div class="panel panel-default">
+    <div class="panel-heading">Inscription</div>
+    <div class="panel-body">
+        <table>
+            <tr>
+                <td width="180px">Adresse e-mail</td>
+                <td>{{ form_widget(form.email,{ 'attr': {'class': 'form-control','placeholder':'Address Email'} }) }}</td>
+            </tr>
+            <tr>
+                <td>Nom d'utilisateur</td>
+                <td>{{ form_widget(form.username,{ 'attr': {'class': 'form-control','placeholder':'Nom d utilisateur'} }) }}</td>
+            </tr>
+            <tr>
+                <td>Mot de passe</td>
+                <td>{{ form_widget(form.plainPassword.first,{ 'attr': {'class': 'form-control','placeholder':'Mot de passe'} }) }}</td>
+            </tr>
+            <tr>
+                <td>Répéter le mot de passe</td>
+                <td>{{ form_widget(form.plainPassword.second,{ 'attr': {'class': 'form-control','placeholder':'Répéter le mot de passe'} }) }}</td>
+            </tr>
+            <tr>
+                <td height="50px">
+                    <input type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-primary" />
+                </td>
+            </tr>
+        </table>
+
+        {{ form_end(form) }}
+
+
+        <div>
     </div>
-{{ form_end(form) }}
+    </div>
+    </div>
+
+{% endblock %}

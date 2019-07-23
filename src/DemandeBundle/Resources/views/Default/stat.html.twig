@@ -1,0 +1,136 @@
+{% extends 'baseAdm.html.twig'%}
+{% block content %}
+    <html>
+    <head>
+        <script>
+            var tableau1 = [];
+            var tableau2 = [];
+            {% set i=0 %}
+            {% set j=0 %}
+            {% for c in cats %}
+            tableau1[{{ i }}] = "{{ c.nom }}" ;
+            {% for n in nb %}
+            {% if (c.id==n.iddem) %}
+            tableau2[{{ j }}] = "{{ n.nbdem }}" ;
+            {% set j=j+1 %}
+            {% else %}
+            tableau2[{{ j }}] = 0 ;
+            {% endif %}
+            {% endfor %}
+            {% set i=i+1 %}
+            {% endfor %}
+            var lineChartData = {
+                labels : tableau1 ,
+                datasets : [
+                    {
+                        fillColor : "rgba(220,220,220,0.2)",
+                        strokeColor : "rgba(220,220,220,1)",
+                        pointColor : "rgba(220,220,220,1)",
+                        pointStrokeColor : "#fff",
+                        pointHighlightFill : "#fff",
+                        pointHighlightStroke : "rgba(220,220,220,1)",
+                        data : tableau2
+                    }
+                ]
+
+            }
+
+            var doughnutData = [
+                {
+                    value: {{ nbrdem1.nbdem }},
+                    color:"#30a5ff",
+                    highlight: "#62b9fb",
+                    label: "Demande ont des repenses"
+                },
+                {
+                    value: {{ nbrdem2.nbdem }},
+                    color: "#ffb53e",
+                    highlight: "#fac878",
+                    label: "Demande Validée"
+                },
+
+                {
+                    value: {{ nbrdem0.nbdem }},
+                    color: "#f9243f",
+                    highlight: "#f6495f",
+                    label: "Demande n'ont pas du repense"
+                }
+
+            ];
+
+
+            window.onload = function() {
+                var chart1 = document.getElementById("line-chart").getContext("2d");
+                window.myLine = new Chart(chart1).Line(lineChartData, {
+                    responsive: true
+                });
+                var chart2 = document.getElementById("doughnut-chart").getContext("2d");
+                window.myLine = new Chart(chart2).Doughnut(doughnutData, {
+                    responsive: true
+                });
+                $(function() {
+                    $('#easypiechart-blue').easyPieChart({
+                        scaleColor: false,
+                        barColor: '#30a5ff'
+                    });
+                });
+
+                $(function() {
+                    $('#easypiechart-red').easyPieChart({
+                        scaleColor: false,
+                        barColor: '#f9243f'
+                    });
+                });
+
+
+
+            }
+        </script>
+    </head>
+    <body>
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+
+        <a href="{{ path('PDF') }}"> <input type="button" class="btn btn-danger" value="Imprimer"></a>
+        <br>
+        <br>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Nombre des demandes par categorie</div>
+                    <div class="panel-body">
+                        <div class="canvas-wrapper">
+                            <canvas class="main-chart" id="line-chart" height="200" width="600"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Etat des demandes</div>
+                <div class="panel-body">
+                    <div class="canvas-wrapper">
+                        <canvas class="chart" id="doughnut-chart" height="251" width="502" style="width: 502px; height: 251px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        <div class="col-xs-6 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body easypiechart-panel">
+                    <h4>Taux des comantaires sur les demandes</h4>
+                    <div class="easypiechart" id="easypiechart-blue" data-percent="{{ tauxcom }}"><span class="percent">{{ tauxcom|round(2, 'floor') }}%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body easypiechart-panel">
+                    <h4>Taux des utilisateur ont des demandes</h4>
+                    <div class="easypiechart" id="easypiechart-red" data-percent="{{ tauxuser }}"><span class="percent">{{ tauxuser|round(2, 'floor') }}%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    </body>
+    </html>
+{% endblock %}

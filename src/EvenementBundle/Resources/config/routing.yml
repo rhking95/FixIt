@@ -24,3 +24,12 @@ evenement_edit:
 evenement_delete:
     path:     /{id}/supprimer
     defaults: { _controller: EvenementBundle:Default:delete }
+
+evenement_lst_mobile:
+    path:     /lstevent
+    defaults: { _controller: EvenementBundle:Default:lsteventmobile}
+
+evenement_lstparticiper_mobile:
+    path:     /part/{idevent}/{iduser}
+    defaults: { _controller: EvenementBundle:Default:participermobile}
+

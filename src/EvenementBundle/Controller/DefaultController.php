@@ -6,6 +6,7 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\Commentaire;
 use EvenementBundle\Entity\Evenement;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use EvenementBundle\Form\EvenementType;
@@ -13,6 +14,9 @@ use EvenementBundle\Form\EvenementEditType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 
 class DefaultController extends Controller
@@ -193,7 +197,7 @@ class DefaultController extends Controller
 
 
         $users =$this->getDoctrine()->getRepository(User::class)->findAll();
-        $coms = $this->getDoctrine()->getRepository(Commentaire::class)->findAll();
+        $coms = $this->getDoctrine()->getRepository(Commentaire::class)->findBy(array('type'=>4));
 
         return $this->render('@Evenement/Default/listeEvenements.html.twig', array(
             'evenement' => $evenements_en_cours,
@@ -274,5 +278,23 @@ class DefaultController extends Controller
             ;
     }
 
+    public function lsteventmobileAction(){
+        $events = $this->getDoctrine()->getRepository
+        (Evenement::class)->liste_des_evenements_en_cours();
+        $serializer=new Serializer([new ObjectNormalizer()]);
+        $formatted=$serializer->normalize($events);
+        return new JsonResponse($formatted);
+    }
+
+    public function participermobileAction($idevent,$iduser){
+        $events = $this->getDoctrine()->getRepository(Evenement::class)->findBy(array('id'=>$idevent));
+        $users = $this->getDoctrine()->getRepository(User::class)->findBy(array('id'=>$iduser));
+        $event = $events[0];
+        $event->getParticipants()->add($users[0]);
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return new Response(0);
+    }
 
 }

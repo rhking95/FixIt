@@ -16,29 +16,29 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-           <table border="0">
-           <tr>
-               <td width="150px">
-                   <a href="{{ path("modifier_dem",{'iddem':i.id}) }}">
-                       <svg class="glyph stroked pencil">
-                           <use xlink:href="#stroked-pencil"/>
-                       </svg>
-                       Modifier
-                   </a>
-               </td>
-               <td width="1000px">
-                   : {{ i.cat.nom}} | Demande #{{ i.id }}
-               </td>
-               <td>
-                   <a href="{{ path("modifier_dem",{'iddem':i.id}) }}">
-                       <svg class="glyph stroked cancel">
-                           <use xlink:href="#stroked-cancel"/>
-                       </svg>
+            <table border="0">
+                <tr>
+                    <td width="150px">
+                        <a href="{{ path("modifier_dem",{'iddem':i.id}) }}">
+                            <svg class="glyph stroked pencil">
+                                <use xlink:href="#stroked-pencil"/>
+                            </svg>
+                            Modifier
+                        </a>
+                    </td>
+                    <td width="1000px">
+                        : {{ i.cat.nom}} | Demande #{{ i.id }}
+                    </td>
+                    <td>
+                        <a href="{{ path("modifier_dem",{'iddem':i.id}) }}">
+                            <svg class="glyph stroked cancel">
+                                <use xlink:href="#stroked-cancel"/>
+                            </svg>
 
-                   </a>
-               </td>
-           </tr>
-           </table>
+                        </a>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div class="panel-body">
             <table border="0">
@@ -69,7 +69,7 @@
                         <p> Adresse : </p>
                     </td>
                     <td>
-                        <input type="text" value="{{ i.address }}" disabled class="form-control">
+                        <input type="text" value="{{ i.address.Libelle }}" disabled class="form-control">
                     </td>
                 </tr>
                 <tr>
@@ -182,7 +182,8 @@
             {% endfor %}
         </div>
     </div>
-
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
     <ol class="breadcrumb">
         <li>
             <a href="#">
@@ -250,7 +251,7 @@
                             <p> Adresse : </p>
                         </td>
                         <td>
-                            <input type="text" value="{{ i.address }}" disabled class="form-control">
+                            <input type="text" value="{{ i.address.Libelle }}" disabled class="form-control">
                         </td>
                     </tr>
                     <tr>
@@ -265,5 +266,7 @@
                 </table>
             </div>
         </div>
+
     {% endfor %}
+    </div>
 {% endblock %}

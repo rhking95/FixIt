@@ -1,0 +1,92 @@
+{% block title %}Welcome!{% endblock %}
+
+<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+
+{% block css %}
+
+    <link href="{{ asset('template/css/bootstrap.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template/css/datepicker3.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template/css/bootstrap-table.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template/css/styles.css') }}" rel="stylesheet"/>
+
+{% endblock %}
+
+{% block script %}
+    <!--Icons-->
+    <script src="{{ asset('template/js/lumino.glyphs.js') }}"></script>
+    <script src="{{ asset('template/js/jquery-1.11.1.min.js') }}"></script>
+    <script src="{{ asset('template/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('template/js/chart.min.js') }}"></script>
+    <script src="{{ asset('template/js/easypiechart.js') }}"></script>
+    <script src="{{ asset('template/js/bootstrap-datepicker.js') }}"></script>
+{% endblock %}
+
+{% block header %}
+    <div class="col-lg-12">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <table border="0">
+                    <tr>
+                        <td width="850px">
+                            <div class="navbar-header">
+                            <a class="navbar-brand"><span>| Fix It |</span>| bienvenu |</a>
+                            </div>
+                        </td>
+
+                        <div class="navbar-header">
+                        <form action="/FixIT/web/app_dev.php/login_check" method="post">
+                            <td>
+                                <input type="text" id="username" name="_username" value="" required="required" class="form-control"
+                                placeholder="Nom utilisateur">
+                            </td>
+                            <td width="10px"></td>
+                            <td>
+                                <input type="password" id="password" name="_password" required="required" class="form-control"
+                                placeholder="Mot de passe">
+                            </td>
+                            <td width="10px"></td>
+                            <td>
+                                <input type="submit" id="_submit" name="_submit" value="Connexion" class="btn btn-primary">
+                            </td>
+                            </form>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+
+                </div>
+        </nav>
+            </div><!-- /.container-fluid -->
+        </nav>
+
+    </div>
+{% endblock %}
+
+{% block section %}
+    <div class="col-lg-12">
+        <div id="sidebar-collapse" class="col-sm-5 col-lg-2 sidebar">
+            <ul class="nav menu">
+                <li role="presentation" class="divider"></li>
+                <li class="parent ">
+                    <a href="#">
+                        <span data-toggle="collapse" href="#sub-item-1">
+                        <svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg>
+                        </span>acceuil
+                    </a>
+                </li>
+
+                <li role="presentation" class="divider"></li>
+
+                <li class="parent ">
+                    <a href="{{ path('fos_user_registration_register') }}">
+                        <span data-toggle="collapse" href="#sub-item-1">
+                        <svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg>
+                        </span>Register
+                    </a>
+                </li>
+
+            </ul></div></div>
+{% endblock %}
+{% block content %}{% endblock %}
+{% block footer %}{% endblock %}

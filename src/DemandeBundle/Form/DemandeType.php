@@ -3,6 +3,7 @@
 namespace DemandeBundle\Form;
 
 
+use AppBundle\Repository\AdresseRepository;
 use Doctrine\DBAL\Types\IntegerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -32,7 +33,15 @@ class DemandeType extends AbstractType
             ->add('prix',NumberType::class,[
                     'scale' => 2,
                 ])
-            ->add('address')
+            ->add('address',EntityType::class,
+                array(
+                    'class' => 'AppBundle\Entity\Adresse',
+                    'query_builder' => function (AdresseRepository $er) {
+                        return $er->createQueryBuilder('a')
+                            ->andWhere('a.IdParent is null');
+                    },
+                    'choice_label' => 'Libelle',
+                ))
             ->add('contact')
             ->remove('iduser')
             ->add('Demander',SubmitType::class);

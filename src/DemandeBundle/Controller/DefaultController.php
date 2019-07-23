@@ -8,11 +8,14 @@ use AppBundle\Entity\Commentaire;
 use DemandeBundle\Entity\Demande;
 use DemandeBundle\Entity\Repense;
 use DemandeBundle\Form\DemandeType;
+use DemandeBundle\Repository\DemandeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DomCrawler\Image;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+
 
 class DefaultController extends Controller
 {
@@ -297,5 +300,57 @@ class DefaultController extends Controller
 
     }
 
+
+    public function stateAction(){
+
+            $em=$this->getDoctrine()->getManager();
+            $cats=$em->getRepository(Categorie::class)->findAll();
+            $nbrcats = $em->getRepository(Demande::class)->countdem();
+            $nbrdem0 = $em->getRepository(Demande::class)->countdem0();
+            $nbrdem1 = $em->getRepository(Demande::class)->countdem1();
+            $nbrdem2 = $em->getRepository(Demande::class)->countdem2();
+
+            $dems=$em->getRepository(Demande::class)->findAll();
+            $demcom=$em->getRepository(Demande::class)->countdemcom();
+
+            $tauxcom = ($demcom[0]['nbdemcom']/sizeof($dems))*100;
+
+            $users = $em->getRepository(User::class)->findAll();
+            $demuser = $em->getRepository(Demande::class)->countdemuser();
+
+            $tauxuser = ($demuser[0]['nbdemuser']/sizeof($users))*100;
+
+        return $this->render('@Demande/Default/stat.html.twig',array('cats'=>$cats,'nb'=>$nbrcats,'nbrdem0'=>$nbrdem0[0]
+            ,'nbrdem1'=>$nbrdem1[0],'nbrdem2'=>$nbrdem2[0],'tauxcom'=>$tauxcom,'tauxuser'=>$tauxuser));
+    }
+
+    public function pdfAction(){
+        $em=$this->getDoctrine()->getManager();
+        $cats=$em->getRepository(Categorie::class)->findAll();
+        $nbrcats = $em->getRepository(Demande::class)->countdem();
+        $nbrdem0 = $em->getRepository(Demande::class)->countdem0();
+        $nbrdem1 = $em->getRepository(Demande::class)->countdem1();
+        $nbrdem2 = $em->getRepository(Demande::class)->countdem2();
+
+        $dems=$em->getRepository(Demande::class)->findAll();
+        $demcom=$em->getRepository(Demande::class)->countdemcom();
+
+        $tauxcom = ($demcom[0]['nbdemcom']/sizeof($dems))*100;
+
+        $users = $em->getRepository(User::class)->findAll();
+        $demuser = $em->getRepository(Demande::class)->countdemuser();
+
+        $tauxuser = ($demuser[0]['nbdemuser']/sizeof($users))*100;
+
+        $html = $this->render('@Demande/Default/statprint.html.twig',array('cats'=>$cats,'nb'=>$nbrcats,'nbrdem0'=>$nbrdem0[0],'nbrdem1'=>$nbrdem1[0],'nbrdem2'=>$nbrdem2[0],'tauxcom'=>$tauxcom,'tauxuser'=>$tauxuser));
+        //return  $this->render('@Demande/Default/statprint.html.twig',array('cats'=>$cats,'nb'=>$nbrcats,'nbrdem0'=>$nbrdem0[0],'nbrdem1'=>$nbrdem1[0],'nbrdem2'=>$nbrdem2[0],'tauxcom'=>$tauxcom,'tauxuser'=>$tauxuser));
+        $snappy = $this->get('knp_snappy.pdf');
+        $snappy->setOption('javascript-delay', 500);
+        return new PdfResponse(
+            $snappy ->getOutputFromHtml($html,array(
+                'enable-javascript' => true,
+                'no-stop-slow-scripts' => true
+            )),'Statistiques_Demandes.pdf');
+    }
 
 }

@@ -24,7 +24,7 @@
                         <p>
                             {{ i.dis }}<br>
                             prix : {{ i.prix }}<br>
-                            adresse : {{ i.address }}
+                            adresse : {{ i.address.Libelle }}
                         </p>
                     </div>
                 </li>
@@ -32,8 +32,12 @@
     <!-- lst commentaire par demande -->
     <button id="{{ i.id ~ '0' }}" class="btn btn-primary">Afficher les commentaires</button>
     <button id="{{ i.id ~ '1' }}"  class="btn btn-default" hidden >Masquer les commentaires</button>
-    <a href="{{ path('traitement_demande',{'id':i.id}) }}"> <button  class="btn btn-danger">Demande de traitement</button></a>
-    <div id="{{ i.id ~ '2' }}" hidden>
+            {% if i.iduser.id == app.user.id %}
+              <button  class="btn btn-danger" disabled>Demande de traitement</button>
+            {% else %}
+                <a href="{{ path('traitement_demande',{'id':i.id}) }}"> <button  class="btn btn-danger">Demande de traitement</button></a>
+            {% endif %}
+            <div id="{{ i.id ~ '2' }}" hidden>
         <form action="{{ path('add_com') }}">
             <br>
             {% for k in coms %}

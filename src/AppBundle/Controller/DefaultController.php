@@ -20,8 +20,12 @@ class DefaultController extends Controller
     {
         $authChecker = $this->container->get('security.authorization_checker');
         // replace this example code with whatever you need
-        if ($authChecker->isGranted('ROLE_USER')) {
+        if ($authChecker->isGranted('ROLE_ADMIN')) {
+            return $this->render('baseAdm.html.twig');
+        }else if($authChecker->isGranted('ROLE_USER')){
             return $this->render('base.html.twig');
+        }else{
+            return $this->render('baselogin.html.twig');
         }
     }
 

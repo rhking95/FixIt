@@ -36,9 +36,8 @@ class Demande
     private $photo;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="address",type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Adresse")
+     * @ORM\JoinColumn(name="address",referencedColumnName="idAdresse")
      */
     private $address;
 
