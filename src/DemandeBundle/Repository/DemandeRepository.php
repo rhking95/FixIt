@@ -45,5 +45,13 @@ class DemandeRepository extends \Doctrine\ORM\EntityRepository
         )->getResult();
     }
 
+    public function FiltreDemande($adresse)
+    {
+        $req = "select  d.id,c.nom cat,u.username iduser,d.dis,d.photo photo, a.Libelle address,d.contact,d.prix,d.etat
+                    from DemandeBundle:Demande d, AppBundle:Categorie c, AppBundle:Adresse a ,AppBundle:User u
+                    where c.id=d.cat and a.idAdresse = d.address  and u.id = d.iduser and a.idAdresse =".$adresse ;
+
+        return $this->getEntityManager()->createQuery($req)->getArrayResult();
+    }
 
 }

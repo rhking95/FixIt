@@ -2,6 +2,7 @@
 
 namespace DemandeBundle\Controller;
 
+use AppBundle\Entity\Adresse;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Categorie;
 use AppBundle\Entity\Commentaire;
@@ -15,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class DefaultController extends Controller
@@ -77,9 +79,10 @@ class DefaultController extends Controller
         $demandes = $this->getDoctrine()->getRepository
         (Demande::class)->findAll();
         $users =$this->getDoctrine()->getRepository(User::class)->findAll();
-        $coms = $this->getDoctrine()->getRepository(Commentaire::class)->findAll(array('type'=>1));
+        $coms = $this->getDoctrine()->getRepository(Commentaire::class)->findBy(array('type'=>1));
+        $adresse = $this->getDoctrine()->getRepository(Adresse::class)->findby(array('Niveau'=>0));
         return $this->render('@Demande/Default/lstdemande.html.twig', array('demandes' => $demandes,'users'=>$users,
-        'coms'=>$coms));
+        'coms'=>$coms,'adresse'=>$adresse));
 
     }
 
@@ -101,7 +104,7 @@ class DefaultController extends Controller
         $demandes = $this->getDoctrine()->getRepository
         (Demande::class)->findAll();
         $users =$this->getDoctrine()->getRepository(User::class)->findAll();
-        $coms = $this->getDoctrine()->getRepository(Commentaire::class)->findAll(array('type'=>1));
+        $coms = $this->getDoctrine()->getRepository(Commentaire::class)->findBy(array('type'=>1));
         return $this->render('@Demande/Default/lstdemande.html.twig', array('demandes' => $demandes,'users'=>$users,
             'coms'=>$coms));
 
@@ -352,4 +355,16 @@ class DefaultController extends Controller
             )),'Statistiques_Demandes.pdf');
     }
 
+    public function RechercheDemandeAction(Request $request){
+        $adresse = $request->request->get('adresse');
+
+        $em=$this->getDoctrine()->getManager();
+        $demandes=$em->getRepository(Demande::class)->FiltreDemande($adresse);
+        $response = new Response(json_encode(array(
+            'demandes' =>  $demandes
+        )));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
 }

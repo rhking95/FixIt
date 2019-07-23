@@ -51,4 +51,18 @@ class DefaultController extends Controller
         }
 
     }
+
+    /**
+     * @Route("Acceuil", name="Acceuil")
+     */
+    public function Acceuil(){
+        return $this->render('acceuil.html.twig');
+    }
+
+    /**
+     * @Route("AcceuilAdm", name="AcceuilAdm")
+     */
+    public function AcceuilAdm(){
+        return $this->render('acceuillogin.html.twig');
+    }
 }

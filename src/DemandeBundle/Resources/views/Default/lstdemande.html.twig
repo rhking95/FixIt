@@ -1,12 +1,111 @@
 {% extends 'base.html.twig' %}
 {% block content %}
+    <head>
+        <script>
+            jQuery(function($) {
+                $('#filtre').click(function () {
+                    $('#tousdemandes').toggle(true);
+                    $('#filtre').toggle(false);
+                    $('#filtretitre').toggle(true);
+                    $('#filtregroupe').toggle(true);
+                    $('#paneldemanderecherche').empty();
+
+                })
+                $('#tousdemandes').click(function () {
+                    $('#tousdemandes').toggle(false);
+                    $('#filtre').toggle(true);
+                    $('#filtretitre').toggle(false);
+                    $('#filtregroupe').toggle(false);
+                    $('#paneldemande').toggle(true);
+                    $('#paneldemanderecherche').empty();
+
+                })
+                $('#appliquer').click(function () {
+                    $('#paneldemande').toggle(false);
+                    $('#paneldemanderecherche').empty();
+                    $.ajax({
+                        url: "/Fixit/web/app_dev.php/demande/recherchedemande",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            'adresse': $('#adresseselect').val()
+                        },
+                        async: true,
+                        success: function (data) {
+                            var obj = data.demandes;
+                           remplir(obj);
+                        }
+                    })
+                })
+            });
+
+
+
+            function remplir(obj) {
+                for (i in obj) {
+                    if (obj.hasOwnProperty(i)) {
+                        $('#paneldemanderecherche').append(
+                        '<ul>'+
+                        '<li class="left clearfix">'+
+								'<span class="chat-img pull-left">'+
+									'<a href="http://localhost/FixIT/web/img/'+obj[i].photo+'">'+
+                                        '<img src="http://localhost/FixIT/web/img/'+obj[i].photo+'" class="img-circle"  height="80" width="80">'+
+								    '</a>'+
+                                '</span>'+
+
+                    '<div class="chat-body clearfix">'+
+
+                        '<div class="header">'+
+                        '<strong class="primary-font">'+obj[i].iduser+'</strong>'+
+                        '</div>'+
+                        '<p>'+
+                        obj[i].dis+'<br>'+
+                        'prix :'+obj[i].prix+'<br>'+
+                        'adresse :'+obj[i].address+
+                        '</p>'+
+                        '</div>'+
+                        '</li>'+
+                        '</ul>'
+
+                        );
+                    }
+                }
+            }
+        </script>
+    </head>
 <body>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
     <div class="panel panel-default chat">
     <div class="panel-heading" id="accordion">
         <svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg>Demandes
     </div>
-    <div class="panel-body">
+        <div class="col-lg-12">
+            <br>
+            <button type="button" class="btn btn-primary" id="filtre">Filtrer</button>
+            <button type="button" class="btn btn-danger" id="tousdemandes" hidden>Afficher toutes les demandes</button>
+        </div>
+        <div class="col-lg-12" id="filtretitre" hidden>
+            <h4><b>Filtres de recherches :</b></h4>
+        </div>
+        <div class="col-lg-12" id="filtregroupe" hidden>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <select class="form-control" id="adresseselect" >
+                    <option value="-1"  disabled data-align="center" selected>Veuillez choisisr l'adresse</option>
+                    {% for a in adresse %}
+                        <option value="{{ a.idAdresse}}" data-align="center">{{ a.Libelle}}</option>
+                        {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <button type="button" class="btn btn-primary" id="appliquer">Appliquer</button>
+
+        </div>
+        </div>
+        <div class="panel-body" id="paneldemanderecherche">
+        </div>
+    <div class="panel-body" id="paneldemande">
         {% for i in demandes %}
             <ul>
                 <li class="left clearfix">

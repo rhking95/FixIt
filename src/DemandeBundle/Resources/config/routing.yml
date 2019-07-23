@@ -58,6 +58,11 @@ Stat_Dem:
     path:     /statdem
     defaults: { _controller: DemandeBundle:Default:state }
 
+demandes_filtres:
+    path:     /recherchedemande
+    defaults: { _controller: DemandeBundle:Default:RechercheDemande }
+    methods: [post]
+
 PDF:
     path:     /pdf
     defaults: { _controller: DemandeBundle:Default:pdf }
