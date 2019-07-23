@@ -58,3 +58,11 @@ service_listserviceapprouverpage_filtres:
 service_approuvepage:
     path:     /rechercheapprouver/{idservice}/{type}
     defaults: { _controller: ServiceBundle:Service:Approuve }
+
+service_lst_mobile:
+    path:     /lstservice
+    defaults: { _controller: ServiceBundle:Default:lstsevice }
+
+service_mail_mobile:
+    path:     /mail/{rep}/{idserv}/{iduser}
+    defaults: { _controller: ServiceBundle:Default:mailMobile }

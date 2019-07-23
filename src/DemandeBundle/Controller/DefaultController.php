@@ -57,7 +57,6 @@ class DefaultController extends Controller
                     var_dump($e);
                     // ... handle exception if something happens during file upload
                 }
-
                 $dem->setDate(new \DateTime('now'));
                 $users = $this->getDoctrine()->getRepository(User::class)->findBy(array('id'=>$req->get('iduser')));
                 $dem->setIduser($users[0]);
