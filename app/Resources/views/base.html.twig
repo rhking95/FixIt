@@ -144,7 +144,7 @@
 					</span> Services
                     </a>
                     <ul class="children collapse in" id="sub-item-3" style="">
-                        <li><a href="{{ path('service_ajoutpage',{'iduser':app.user.id}) }}">
+                        <li><a href="{{ path('service_ajoutpage',{'iduser':app.user.id},{'email':app.user.email}) }}">
                                 <svg class="glyph stroked notepad ">
                                     <use xlink:href="#stroked-pencil"/>
                                 </svg>

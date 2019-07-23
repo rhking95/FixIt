@@ -66,6 +66,8 @@ doctrine:
 swiftmailer:
     transport: '%mailer_transport%'
     host: '%mailer_host%'
+    port: '%mailer_port%'
+    encryption: '%mailer_encryption%'
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
@@ -81,7 +83,7 @@ fos_user:
      mailer: fos_user.mailer.twig_swift
  from_email:
      address: "yesser.somai@esprit.tn"
-     sender_name: "WorkflowCredit"
+     sender_name: "FixIT"
  registration:
       form:
           type : AppBundle\Form\UserType

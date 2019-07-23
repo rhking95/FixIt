@@ -37,6 +37,7 @@ class ServiceController extends Controller
     public function AjoutServiceAction(Request $request){
         $idservice = $request->request->get('idservice');
         $idutilisateur = $request->request->get('idutilisateur');
+        $emailutilisateur = $request->request->get('emailutilisateur');
         $titreservice = $request->request->get('titreservice');
         $categorieservice = $request->request->get('categorieservice');
         $descrptionservice = $request->request->get('descrptionservice');
@@ -72,6 +73,7 @@ class ServiceController extends Controller
         $service->setDateCreationService(new \DateTime("now"));
         $em->persist($service);
         $em->flush();
+        $this->MailAction('Confirmation d\'ajout de service',$emailutilisateur,'Votre service est envoyé à l\' administrateur pour validation');
 
         $response = new Response(json_encode(array(
             'confirmation' =>  '/Fixit/web/app_dev.php/service/liste/'.$idutilisateur
@@ -202,4 +204,14 @@ class ServiceController extends Controller
         $em->flush();
         return $this->ApprouverAction();
     }
+    public function MailAction($subject,$to,$body)
+    {
+        $message = (new \Swift_Message($subject))
+            ->setFrom('radhouane.rh@gmail.com')
+            ->setTo($to)
+            ->setBody($body)
+        ;
+        $this->get('mailer')->send($message);
+    }
+
 }

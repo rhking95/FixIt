@@ -6,7 +6,9 @@ parameters:
     database_user: root
     database_password: null
     mailer_transport: gmail
-    mailer_host: 127.0.0.1
-    mailer_user: radhouane.homrani@esprit.tn
-    mailer_password: r26442330
+    mailer_host: smtp.gmail.com
+    mailer_user: radhouane.rh@gmail.com
+    mailer_password: brwshjeeobspyars
+    mailer_port: 465
+    mailer_encryption : ssl
     secret: ThisTokenIsNotSoSecretChangeIt

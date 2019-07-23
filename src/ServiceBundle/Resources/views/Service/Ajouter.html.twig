@@ -117,6 +117,7 @@
                         data: {
                             "idservice" : null,
                             "idutilisateur" : $("#idutilisateur").val(),
+                            "emailutilisateur" : $("#emailutilisateur").val(),
                             "titreservice" : $("#titreservice").val(),
                             "categorieservice" : $("#categorieservice option:selected").val(),
                             "descrptionservice" : $("#descrptionservice").val(),
@@ -143,6 +144,7 @@
             <div class="panel-body">
                 <form role="form">
                     <input type="text" value="{{ app.user.id }}" id="idutilisateur"  disabled hidden>
+                    <input type="text" value="{{ app.user.email }}" id="emailutilisateur"  disabled hidden>
                     <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
